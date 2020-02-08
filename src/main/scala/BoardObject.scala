@@ -2,8 +2,10 @@ import scala.swing
 
 abstract class BoardObject
 {
-    //position
-    var x, y: Float
-    var sprite: Option[ImageIcon]
+  val position : Point //position sur l'image (pas sur la grille)
+  val sprite: Option[ImageIcon]
+  def update : Unit => Unit
 }
+
+
 
