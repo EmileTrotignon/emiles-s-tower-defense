@@ -1,3 +1,5 @@
+package GameLogic
+/*
 abstract class Monster extends BoardObject
 {
   val max_hp: Float
@@ -36,3 +38,4 @@ class Triangle extends Monster
 {
 
 }
+*/

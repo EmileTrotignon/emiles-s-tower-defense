@@ -1,3 +1,5 @@
+package GameLogic
+/*
 abstract class Tower(p : Coordinates) extends BoardObject(p)
 {
   val square : Square //position sur la grille (pas sur l'image). La position sur l'imagedoit être déduite à l'affichage
@@ -17,3 +19,4 @@ abstract class Bullet extends BoardObject
   val speed : Int
 
 }
+*/

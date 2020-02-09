@@ -1,4 +1,8 @@
-class Board
+package GameLogic
+
+import com.sun.org.apache.xpath.internal.operations.Bool
+
+/*class Board
 {
   def play_step = ()//TODO update tout le monde
 }
@@ -83,3 +87,4 @@ object Game
      */
   }
 }
+*/

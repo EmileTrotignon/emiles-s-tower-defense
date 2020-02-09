@@ -1,5 +1,6 @@
-import scala.swing
-
+import GameLogic.Point
+//import scala.swing
+/*
 abstract class BoardObject
 {
   val position : Point //position sur l'image (pas sur la grille)
@@ -7,5 +8,4 @@ abstract class BoardObject
   def update : Unit => Unit
 }
 
-
-
+*/
