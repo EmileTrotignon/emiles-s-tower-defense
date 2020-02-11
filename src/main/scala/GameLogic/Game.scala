@@ -2,89 +2,42 @@ package GameLogic
 
 import com.sun.org.apache.xpath.internal.operations.Bool
 
-/*class Board
+import scala.collection.mutable.ArrayBuffer
+
+class BoardLogic(val map: GameMap)
 {
-  def play_step = ()//TODO update tout le monde
+    var monsters: ArrayBuffer[Monster] = new ArrayBuffer[Monster]
+    var towers: ArrayBuffer[Tower] = new ArrayBuffer[Tower]
+    var bullets: ArrayBuffer[BulletLogic] = new ArrayBuffer[BulletLogic]
 }
 
-class Level(val groups : List[Group])
+class Level(val waves: List[Wave])
 {
-  var next_Waves : List[Group] = waves
+    var next_waves: List[Wave] = waves
 
-  def start =
-  {
-    //intro éventuelle TODO
-  }
-
-  def update = spawn_wave
-
-  def spawn_wave =
-  {
-    next_waves match
+    def spawn_wave: Boolean =
     {
-      case wave :: next =>
+        next_waves match
         {
-          next_waves = next
-          wave.spawn
-          true
+            case wave :: next =>
+                next_waves = next
+                wave.spawn()
+                true
+            case Nil => false
         }
-      case Nil => false
     }
-  }
 
-  def isFinished = (Nil == next_groups)
+    def isFinished: Boolean = (Nil == next_waves)
 }
 
-class Player
+class PlayerLogic(var money: Double, var lives: Double)
 {
-  var money : Int = 100
-
-  def build_tower : Unit => Bool =
-  {
-    get_tower match
-    {
-      case None => false //le joueur a cliqué sur "battaille !"
-      case Some (tower : Tower) => tower.build()
-    }
-  }
-
-  //lorsque get_tower renvoie une tower, il doit avoir renseigné son square
-  def get_tower : Option[Tower] = None //TODO
 }
 
-object Game
+class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[Level])
 {
-  val levels : Array[Level] //TODO
+    val board: BoardLogic = new BoardLogic(map)
 
-  val board : Board
-  val player : Player
+    val player: PlayerLogic = new PlayerLogic(starting_money, starting_lives)
 
-  def play_turn(level : Level) : Bool =
-  {
-    //tour du joueur
-    while(player.build_tower);
-
-    //tour des monstres
-    level.start
-
-    /*
-     gestion :
-     - du temps
-     - de level.update
-     - de board.play_step
-     - de la condition d'arrêt du turn
-     - de la valeur de retour indiquant la victoire du joueur
-     */
-    false
-  }
-
-  def play =
-  {
-    //initialisations
-
-    /*TODO
-     for(level in levels et tant que play_turn);
-     */
-  }
 }
-*/

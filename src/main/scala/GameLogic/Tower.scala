@@ -1,6 +1,6 @@
 package GameLogic
-/*
-abstract class Tower(p : Coordinates) extends BoardObject(p)
+
+abstract class Tower(override var position : Point) extends BoardObject
 {
   val square : Square //position sur la grille (pas sur l'image). La position sur l'imagedoit être déduite à l'affichage
   val damage : Int
@@ -10,13 +10,3 @@ abstract class Tower(p : Coordinates) extends BoardObject(p)
 
   def build : Unit => Unit
 }
-
-abstract class Bullet extends BoardObject
-{
-  var position : Point
-  val direction : Vector
-  val damage : Iloat
-  val speed : Int
-
-}
-*/
