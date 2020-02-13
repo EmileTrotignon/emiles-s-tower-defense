@@ -13,21 +13,28 @@ class BoardLogic(val map: GameMap)
 
 class Level(val waves: List[Wave])
 {
-    var next_waves: List[Wave] = waves
+  var next_waves: List[Wave] = waves
 
-    def spawn_wave: Boolean =
+  def spawn_wave: Boolean =
+  {
+    next_waves match
     {
-        next_waves match
-        {
-            case wave :: next =>
-                next_waves = next
-                wave.spawn()
-                true
-            case Nil => false
-        }
+      case wave :: next =>
+        next_waves = next
+        wave.spawn()
+        true
+      case Nil => {end(); false}
     }
+  }
 
-    def isFinished: Boolean = (Nil == next_waves)
+  def start(): Unit =
+  {
+    ()//TODO
+  }
+
+  def end(): Unit = () //TODO
+
+  def isFinished: Boolean = (Nil == next_waves)
 }
 
 class PlayerLogic(var money: Double, var lives: Double)
@@ -36,8 +43,19 @@ class PlayerLogic(var money: Double, var lives: Double)
 
 class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[Level])
 {
-    val board: BoardLogic = new BoardLogic(map)
+  val board: BoardLogic = new BoardLogic(map)
 
-    val player: PlayerLogic = new PlayerLogic(starting_money, starting_lives)
+  val player: PlayerLogic = new PlayerLogic(starting_money, starting_lives)
 
+  def start_next_level(): Boolean =
+  {
+    next_levels match
+    {
+      case level :: next =>
+        next_levels = next
+        level.start()
+        true
+      case Nil => false
+    }
+  }
 }

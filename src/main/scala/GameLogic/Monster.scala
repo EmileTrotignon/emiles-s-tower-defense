@@ -5,15 +5,15 @@ abstract class Monster extends BoardObject
   val max_hp: Double
   var hp: Double
   val speed: Int
-  val loot: Int
+  val loot: Double
   val size : Double
 
-  def take_damage(damage : Float) : Unit =
+  def take_damage(damage : Double) : Unit =
   {
       hp -= damage
   }
 
-  def spawn() : Unit = ()//TODO
+  def spawn(): Unit = ()//TODO
 }
 
 class Wave(monster_ :Array[Monster])

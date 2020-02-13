@@ -4,6 +4,6 @@ package GameLogic
 
 abstract class BoardObject
 {
-    var position: Point //position sur l'image (pas sur la grille)
+  var position: Point //position sur l'image (pas sur la grille)
 }
 
