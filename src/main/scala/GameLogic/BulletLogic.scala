@@ -5,7 +5,7 @@ abstract class BulletLogic(damage_ : Float, direction_and_speed_ : Vector) exten
     val damage: Float = damage_
     val direction_and_speed: Vector = direction_and_speed_
 
-    def tick_position(): Unit =
+    override def tick(b : BoardLogic): Unit =
     {
         position = new Point(position + direction_and_speed)
     }
