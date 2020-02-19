@@ -6,7 +6,7 @@ import javax.swing.{BoxLayout, JButton, JPanel}
 
 class BuildTowersPanel extends JPanel
 {
-    def build_tower(tower: GameLogic.Point => GameLogic.Tower)(a: ActionEvent): Unit =
+    def build_tower(tower: (GameLogic.Point2DInt, GameLogic.GameMap) => GameLogic.Tower)(a: ActionEvent): Unit =
     {
         cancel_button.setVisible(true)
     }
@@ -21,12 +21,12 @@ class BuildTowersPanel extends JPanel
     val buttons: Array[JButton] = GameLogic.Towers.tower_constructors.map(
         (t: GameLogic.TowerType) =>
         {
-            val b = new Button(t.name, build_tower(t.constructor))
+            val b = new FButton(t.name, build_tower(t.constructor))
             this.add(b)
             b
         })
 
-    val cancel_button = new Button("Cancel", cancel_build)
+    val cancel_button = new FButton("Cancel", cancel_build)
     this.add(cancel_button)
     cancel_button.setVisible(false)
 

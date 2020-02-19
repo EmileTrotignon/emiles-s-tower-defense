@@ -5,19 +5,25 @@ import java.awt.{Graphics2D, Rectangle}
 import GUI.FTimer
 import com.sun.org.apache.xpath.internal.operations.Bool
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
+
 
 class BoardLogic(val map: GameMap)
 {
-    var monsters: ArrayBuffer[Monster] = new ArrayBuffer[Monster]
-    var towers: ArrayBuffer[Tower] = new ArrayBuffer[Tower]
-    var bullets: ArrayBuffer[BulletLogic] = new ArrayBuffer[BulletLogic]
+    var monsters: mutable.Set[Monster] = mutable.Set[Monster]()
+    var towers: mutable.Set[Tower] = mutable.Set[Tower]()
+    var bullets: mutable.Set[BulletLogic] = mutable.Set[BulletLogic]()
 
     def tick_board(): Unit =
     {
+        monsters.filterInPlace(p => p.position.is_in_bounds())
+        bullets.filterInPlace(p => p.position.is_in_bounds())
         monsters.foreach(m => m.tick(this))
         towers.foreach(m => m.tick(this))
         bullets.foreach(m => m.tick(this))
+
+        println(monsters.size)
+
     }
 
     def paint_board(g: Graphics2D, square_size: (Int, Int), bounds: Rectangle): Unit =

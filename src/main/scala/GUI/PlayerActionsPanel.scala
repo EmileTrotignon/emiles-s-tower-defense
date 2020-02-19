@@ -13,7 +13,7 @@ class PlayerActionsPanel(val board_logic : GameLogic.GameLogic) extends JPanel
 
     def start_next_level(action_event : ActionEvent): Unit =
     {
-        board_logic.spawn_monster(GameLogic.Triangle(new GameLogic.Point(50, 50)))
+        board_logic.spawn_monster(GameLogic.Triangle(new GameLogic.Point2DDouble(0.5, 0.01)))
         /*contentPane.remove(panel_player_actions)
         this.setContentPane(contentPane)
         if(!(this.game_logic.start_next_level()))

@@ -2,19 +2,30 @@ package GameLogic
 
 import java.awt.{Color, Graphics2D, Rectangle}
 
-class GameMap(val map : Array[Array[Boolean]])
+class GameMap(val map: Array[Array[Boolean]])
 {
     def size(): (Int, Int) =
     {
         (map.length, map(0).length)
     }
 
-    def is_buildable(i : Int, j : Int): Boolean =
+    def width(): Int =
+    {
+        map.length
+    }
+
+
+    def height(): Int =
+    {
+        map(0).length
+    }
+
+    def is_buildable(i: Int, j: Int): Boolean =
     {
         map(i)(j)
     }
 
-    def paint_map(g : Graphics2D, square_size: (Int, Int), bounds : Rectangle): Unit =
+    def paint_map(g: Graphics2D, square_size: (Int, Int), bounds: Rectangle): Unit =
     {
         g.setColor(Color.red)
         g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height)

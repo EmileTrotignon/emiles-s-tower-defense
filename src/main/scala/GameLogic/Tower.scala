@@ -2,9 +2,9 @@ package GameLogic
 
 import java.awt.Graphics2D
 
-abstract class Tower(override var position: Point) extends BoardObject
+abstract class Tower(val square: Point2DInt = null, map: GameMap) extends BoardObject
 {
-    val square: Square = null //position sur la grille (pas sur l'image). La position sur l'image doit être déduite à l'affichage
+    override var position: Point2DDouble = Point2DInt.square_center(square, map.width(), map.height())
     val damage: Double
     val period: Int
     val reach: Int //portée exprimée en nombre de pixels
@@ -15,7 +15,7 @@ abstract class Tower(override var position: Point) extends BoardObject
 }
 
 
-case class SquareTower(p: Point) extends Tower(p)
+case class SquareTower(square_ : Point2DInt, map: GameMap) extends Tower(square_, map)
 {
     val damage: Double = 1
     val period: Int = 1
@@ -29,7 +29,7 @@ case class SquareTower(p: Point) extends Tower(p)
     {}
 }
 
-class TowerType(val name : String, val constructor : Point => Tower)
+class TowerType(val name: String, val constructor: (Point2DInt, GameMap) => Tower)
 {
 }
 

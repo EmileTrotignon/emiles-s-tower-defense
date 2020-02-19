@@ -4,7 +4,7 @@ import java.awt.Graphics2D
 
 abstract class BoardObject
 {
-  var position: Point //position sur l'image (pas sur la grille)
+  var position: Point2DDouble //position sur l'image (pas sur la grille)
 
   def paint(g : Graphics2D) : Unit
 
