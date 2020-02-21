@@ -6,6 +6,6 @@ import javax.swing.JButton
 
 class FButton(text : String, action : ActionEvent => Unit) extends JButton
 {
-    this.setAction(new ActionFromFunction(action))
+    this.setAction(new FAction(action))
     this.setText(text)
 }

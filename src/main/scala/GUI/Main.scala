@@ -26,6 +26,7 @@ object Main //extends SimpleSwingApplication
 
     def start_game(action_event : ActionEvent): Unit =
     {
+        System.setProperty("sun.java2d.opengl", "true")
         lobby_window.setVisible(false)
         game_window = Some(new GameWindow())
         game_window match

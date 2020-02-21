@@ -73,6 +73,16 @@ class Point2DDouble(val x: Double, val y: Double)
         new Point2DDouble(x - v.x, y - v.y)
     }
 
+    def /(w: Double): Point2DDouble =
+    {
+        new Point2DDouble(x / w, y / w)
+    }
+
+    def *(w: Double): Point2DDouble =
+    {
+        new Point2DDouble(x * w, y * w)
+    }
+
     def squared_dist_to_origin(): Double =
     {
         x * x + y * y
@@ -93,10 +103,12 @@ class Point2DDouble(val x: Double, val y: Double)
         Point2DDouble.floor(new Point2DDouble(x * width, y * height))
     }
 
-    def is_in_bounds(r: Rectangle=new Rectangle(0, 0, 1, 1)): Boolean =
+    def is_in_bounds(r: Rectangle = new Rectangle(0, 0, 1, 1)): Boolean =
     {
         r.x <= x && r.y <= y && x <= (r.x + r.width) && y <= (r.y + r.height)
     }
+
+
 }
 
 object Point2DDouble
@@ -120,6 +132,11 @@ object Point2DDouble
     def squared_dist(p1: Point2DDouble, p2: Point2DDouble): Double =
     {
         (p1 - new Point2DDouble(p2.x, p2.y)).squared_dist_to_origin()
+    }
+
+    def normalized(p: Point2DDouble): Point2DDouble =
+    {
+        p / p.dist_to_origin()
     }
 
 

@@ -8,7 +8,7 @@ class PlayerActionsPanel(val board_logic : GameLogic.GameLogic) extends JPanel
 {
     val next_level_button = new JButton()
     this.add(next_level_button)
-    next_level_button.setAction(new ActionFromFunction(start_next_level))
+    next_level_button.setAction(new FAction(start_next_level))
     next_level_button.setText("Start next level")
 
     def start_next_level(action_event : ActionEvent): Unit =

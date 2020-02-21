@@ -12,7 +12,7 @@ class BoardLogic(val map: GameMap)
 {
     var monsters: mutable.Set[Monster] = mutable.Set[Monster]()
     var towers: mutable.Set[Tower] = mutable.Set[Tower]()
-    var bullets: mutable.Set[BulletLogic] = mutable.Set[BulletLogic]()
+    var bullets: mutable.Set[Bullet] = mutable.Set[Bullet]()
 
     def tick_board(): Unit =
     {
@@ -21,9 +21,6 @@ class BoardLogic(val map: GameMap)
         monsters.foreach(m => m.tick(this))
         towers.foreach(m => m.tick(this))
         bullets.foreach(m => m.tick(this))
-
-        println(monsters.size)
-
     }
 
     def paint_board(g: Graphics2D, square_size: (Int, Int), bounds: Rectangle): Unit =
@@ -32,6 +29,11 @@ class BoardLogic(val map: GameMap)
         monsters.foreach(m => m.paint(g))
         towers.foreach(m => m.paint(g))
         bullets.foreach(m => m.paint(g))
+    }
+
+    def spawn_bullet(bullet: Bullet): Unit =
+    {
+        bullets.addOne(bullet)
     }
 }
 
@@ -93,5 +95,10 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
     def spawn_monster(monster: Monster): Unit =
     {
         board.monsters.addOne(monster)
+    }
+
+    def spawn_tower(tower: Tower): Unit =
+    {
+        board.towers.addOne(tower)
     }
 }
