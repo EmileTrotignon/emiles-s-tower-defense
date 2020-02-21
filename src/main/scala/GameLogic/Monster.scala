@@ -1,6 +1,6 @@
 package GameLogic
 
-import java.awt.{Color, Graphics, Graphics2D}
+import java.awt.{Color, Graphics2D}
 
 abstract class Monster extends BoardObject
 {

@@ -1,7 +1,7 @@
 package GUI
 
-import java.awt.event.{ActionEvent, ActionListener, MouseEvent, MouseListener}
-import java.awt.{Canvas, Color, Graphics, Graphics2D, Rectangle, Toolkit}
+import java.awt.event.{MouseEvent, MouseListener}
+import java.awt.{Graphics, Graphics2D, Toolkit}
 
 import GameLogic.{GameMap, Point2DInt, Tower}
 import javax.swing._
@@ -47,16 +47,7 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
         update_square_size()
         val g2 = g.asInstanceOf[Graphics2D]
         game_logic.board.paint_board(g2, square_size, this.getBounds(null))
-        Toolkit.getDefaultToolkit.sync()
-    }
-
-    def select_square(action_event: ActionEvent): Unit =
-    {
-        //contentPane.remove(panel_player_turn)
-
-        /* TODO
-         ici il faut faire que les carrés soient cliquables et lancent select_tower
-         */
+        Toolkit.getDefaultToolkit.sync() // Very important for speed
     }
 
     object GameBoardCanvasMouseListener extends MouseListener

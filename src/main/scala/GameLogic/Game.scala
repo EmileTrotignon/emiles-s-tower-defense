@@ -3,7 +3,6 @@ package GameLogic
 import java.awt.{Graphics2D, Rectangle}
 
 import GUI.FTimer
-import com.sun.org.apache.xpath.internal.operations.Bool
 
 import scala.collection.mutable
 

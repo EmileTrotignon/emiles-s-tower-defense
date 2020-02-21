@@ -1,11 +1,9 @@
 package GUI
 
-import javax.swing._
-import java.awt.{BorderLayout, Canvas, Graphics}
+import java.awt.event.ActionEvent
 
 import GameLogic._
-
-import java.awt.event.ActionEvent
+import javax.swing._
 
 
 class GameWindow extends JFrame("Emiles's Tower Defense")
@@ -25,8 +23,9 @@ class GameWindow extends JFrame("Emiles's Tower Defense")
         , List())
     val canvas = new GameBoardCanvas(game_logic)
 
-    import javax.swing.JPanel
     import java.awt.BorderLayout
+
+    import javax.swing.JPanel
 
     val contentPane = new JPanel(new BorderLayout)
     contentPane.add(canvas, BorderLayout.CENTER)
