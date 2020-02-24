@@ -130,19 +130,3 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, ne
         board.towers.addOne(tower)
     }
 }
-
-object GameStrategy {
-    val spawn_point = new Point2DDouble(0.5, 0.01)
-
-    val levels: List[Level]=
-      
-      (//level 1
-          new Level(List(
-          new Wave(Array(new Triangle(_))),//wave 1.1
-          new Wave(Array(new Triangle(_),new Triangle(_)))))//wave 1.2
-      ) :: (//level 2
-          new Level(List(
-          new Wave(Array(new Triangle(_),new Triangle(_),new Triangle(_))),//wave 2.1
-          new Wave(Array(new Triangle(_),new Triangle(_)))))//wave 2.2
-      ) :: Nil
-}

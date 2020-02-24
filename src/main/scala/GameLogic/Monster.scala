@@ -37,7 +37,7 @@ class Wave(monster_ : Array[Point2DDouble => Monster])
 
     def spawn(game_logic: GameLogic): Unit =
     {
-        monsters.foreach((monster) => game_logic.spawn_monster(monster(GameStrategy.spawn_point)))
+        monsters.foreach((monster) => game_logic.spawn_monster(monster(MonstersStrategy.spawn_point)))
     }
 
 }
@@ -64,3 +64,17 @@ class Triangle(position: Point2DDouble) extends Monster(position)
     }*/
 }
 
+object MonstersStrategy {
+    val spawn_point = new Point2DDouble(0.5, 0.01)
+
+    val levels: List[Level]=
+      (//level 1
+          new Level(List(
+          new Wave(Array(new Triangle(_))),//wave 1.1
+          new Wave(Array(new Triangle(_),new Triangle(_)))))//wave 1.2
+      ) :: (//level 2
+          new Level(List(
+          new Wave(Array(new Triangle(_),new Triangle(_),new Triangle(_))),//wave 2.1
+          new Wave(Array(new Triangle(_),new Triangle(_)))))//wave 2.2
+      ) :: Nil
+}
