@@ -31,7 +31,7 @@ abstract class Monster(override var position : Point2DDouble) extends BoardObjec
     }
 }
 
-class Wave(monster_ : Array[Point2DDouble => Monster])(val game_logic: GameLogic)
+class Wave(val game_logic: GameLogic, monster_ : Array[Point2DDouble => Monster])
 {
     val monsters: Array[Point2DDouble => Monster] = monster_
 
@@ -42,8 +42,7 @@ class Wave(monster_ : Array[Point2DDouble => Monster])(val game_logic: GameLogic
 
 }
 
-
-case class Triangle(position: Point2DDouble) extends Monster(position)
+class Triangle(position: Point2DDouble) extends Monster(position)
 {
     override val max_hp: Double = 10
     override var hp: Double = max_hp

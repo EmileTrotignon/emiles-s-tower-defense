@@ -36,9 +36,9 @@ class BoardLogic(val map: GameMap)
     }
 }
 
-case class Level(val waves: List[GameLogic => Wave])(val game_logic: GameLogic)
+class Level(val game_logic: GameLogic, val waves: List[Wave])
 {
-    var next_waves: List[GameLogic => Wave] = waves
+    var next_waves: List[Wave] = waves
 
     def spawn_wave(): Boolean =
     {
@@ -46,7 +46,7 @@ case class Level(val waves: List[GameLogic => Wave])(val game_logic: GameLogic)
         {
             case wave :: next =>
                 next_waves = next
-                wave(game_logic).spawn()
+                wave.spawn()
                 true
             case Nil =>
                 try_end()
@@ -131,12 +131,12 @@ object GameStrategy {
     val levels: List[GameLogic => Level]=
       
       (//level 1
-          Level(List(
-          Array((p => Triangle(p))),//wave 1.1
-          Array((p => Triangle(p)),(p => Triangle(p)))))//wave 1.2
+          gl => new Level(gl,List(
+          new Wave(gl,Array((p => new Triangle(p)))),//wave 1.1
+          new Wave(gl,Array((p => new Triangle(p)),(p => new Triangle(p))))))//wave 1.2
       ) :: (//level 2
-          Level(List(
-          Array((p => Triangle(p)),(p => Triangle(p)),(p => Triangle(p))),//wave 2.1
-          Array((p => Triangle(p)),(p => Triangle(p)))))//wave 2.2
+          gl => new Level(gl,List(
+          new Wave(gl,Array((p => new Triangle(p)),(p => new Triangle(p)),(p => new Triangle(p)))),//wave 2.1
+          new Wave(gl,Array((p => new Triangle(p)),(p => new Triangle(p))))))//wave 2.2
       ) :: Nil
 }
