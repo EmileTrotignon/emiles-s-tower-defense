@@ -6,13 +6,36 @@ import GUI.FTimer
 
 import scala.collection.mutable
 
+import java.awt.event._
 
-class BoardLogic(val map: GameMap)
+
+class BoardLogic(val map: GameMap, var next_levels: List[Level])
 {
     var monsters: mutable.Set[Monster] = mutable.Set[Monster]()
     var towers: mutable.Set[Tower] = mutable.Set[Tower]()
     var bullets: mutable.Set[Bullet] = mutable.Set[Bullet]()
-
+    var currentLevel: Level = new Level(Nil)
+    
+    def start_next_level(game_logic: GameLogic): Boolean =
+    {
+        next_levels match
+        {
+            case level :: next =>
+                next_levels = next
+                currentLevel = level
+                currentLevel.start(game_logic)
+                true
+            case Nil => false
+        }
+    }
+    
+    def isDeserted(): Boolean = //tells whether there is still living monsters 
+    {
+        var deserted = true
+        monsters.foreach(m => deserted = false)
+        deserted
+    }
+    
     def tick_board(): Unit =
     {
         monsters.filterInPlace(p => p.position.is_in_bounds())
@@ -20,6 +43,8 @@ class BoardLogic(val map: GameMap)
         monsters.foreach(m => m.tick(this))
         towers.foreach(m => m.tick(this))
         bullets.foreach(m => m.tick(this))
+        if(isDeserted() && currentLevel.isFinished())
+            currentLevel.end()
     }
 
     def paint_board(g: Graphics2D, square_size: (Int, Int), bounds: Rectangle): Unit =
@@ -36,64 +61,49 @@ class BoardLogic(val map: GameMap)
     }
 }
 
-class Level(val game_logic: GameLogic, val waves: List[Wave])
+class Level(val waves: List[Wave])
 {
     var next_waves: List[Wave] = waves
 
-    def spawn_wave(): Boolean =
+    def spawn_wave(game_logic: GameLogic)(a: ActionEvent): Unit =
     {
         next_waves match
         {
             case wave :: next =>
                 next_waves = next
-                wave.spawn()
-                true
+                wave.spawn(game_logic)
             case Nil =>
-                try_end()
-                false
-        }
-    }
-
-    def try_spawn_wave() =
-    {
-        if(!(spawn_wave()))
-        {
-            try_end()
+              alarmCallBack = doNothingCallBack(_)
+              alarmCallBack(a)
         }
     }
     
-    val alarm: GUI.FTimer = new GUI.FTimer(100000/60, a => try_spawn_wave)
+    val alarm: GUI.FTimer = new GUI.FTimer(100000/60, a => alarmCallBack(a))
     
-    def start(): Unit =
+    def doNothingCallBack(a: ActionEvent) = ()
+    var alarmCallBack = doNothingCallBack(_) 
+    
+    def start(game_logic: GameLogic): Unit =
     {
+        alarmCallBack = spawn_wave(game_logic)(_)
         alarm.start()
     }
-
-    def can_end(): Boolean = 
-    {//s'il n'y a plus aucun monstre
-        var succes = true
-        game_logic.board.monsters.foreach(m => succes = false)
-        succes
-    }
     
-    def try_end(): Unit =
+    def end(): Unit =
     {
-        if(can_end())
-        {
-            alarm.stop()
-        }
+        alarm.stop()
     }
 
-    def isFinished: Boolean = Nil == next_waves
+    def isFinished(): Boolean = Nil == next_waves
 }
 
 class PlayerLogic(var money: Double, var lives: Double)
 {
 }
 
-class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[GameLogic => Level])
+class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, next_levels: List[Level])
 {
-    val board: BoardLogic = new BoardLogic(map)
+    val board: BoardLogic = new BoardLogic(map, next_levels)
 
     val player: PlayerLogic = new PlayerLogic(starting_money, starting_lives)
 
@@ -102,16 +112,12 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
     val timer: GUI.FTimer = new FTimer(tick_interval, x => board.tick_board())
     timer.start()
 
-    def start_next_level(): Boolean =
+    var isFinished: Boolean = false
+    
+    def start_next_level(): Unit =
     {
-        next_levels match
-        {
-            case level :: next =>
-                next_levels = next
-                level(this).start()
-                true
-            case Nil => false
-        }
+        if(!(board.start_next_level(this)))
+            isFinished = true
     }
 
     def spawn_monster(monster: Monster): Unit =
@@ -128,15 +134,15 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
 object GameStrategy {
     val spawn_point = new Point2DDouble(0.5, 0.01)
 
-    val levels: List[GameLogic => Level]=
+    val levels: List[Level]=
       
       (//level 1
-          gl => new Level(gl,List(
-          new Wave(gl,Array((p => new Triangle(p)))),//wave 1.1
-          new Wave(gl,Array((p => new Triangle(p)),(p => new Triangle(p))))))//wave 1.2
+          new Level(List(
+          new Wave(Array(new Triangle(_))),//wave 1.1
+          new Wave(Array(new Triangle(_),new Triangle(_)))))//wave 1.2
       ) :: (//level 2
-          gl => new Level(gl,List(
-          new Wave(gl,Array((p => new Triangle(p)),(p => new Triangle(p)),(p => new Triangle(p)))),//wave 2.1
-          new Wave(gl,Array((p => new Triangle(p)),(p => new Triangle(p))))))//wave 2.2
+          new Level(List(
+          new Wave(Array(new Triangle(_),new Triangle(_),new Triangle(_))),//wave 2.1
+          new Wave(Array(new Triangle(_),new Triangle(_)))))//wave 2.2
       ) :: Nil
 }

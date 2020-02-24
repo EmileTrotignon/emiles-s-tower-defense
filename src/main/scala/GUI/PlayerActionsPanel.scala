@@ -13,9 +13,10 @@ class PlayerActionsPanel(val game_logic : GameLogic.GameLogic) extends JPanel
 
     def start_next_level(action_event : ActionEvent): Unit =
     {
-        if(!(game_logic.start_next_level()))
-            congratulate()
+        game_logic.start_next_level()
         //game_logic.spawn_monster(GameLogic.Triangle(new GameLogic.Point2DDouble(0.5, 0.01)))
+        if(game_logic.isFinished)
+            congratulate()
     }
     
     

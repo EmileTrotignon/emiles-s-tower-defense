@@ -31,11 +31,11 @@ abstract class Monster(override var position : Point2DDouble) extends BoardObjec
     }
 }
 
-class Wave(val game_logic: GameLogic, monster_ : Array[Point2DDouble => Monster])
+class Wave(monster_ : Array[Point2DDouble => Monster])
 {
     val monsters: Array[Point2DDouble => Monster] = monster_
 
-    def spawn(): Unit =
+    def spawn(game_logic: GameLogic): Unit =
     {
         monsters.foreach((monster) => game_logic.spawn_monster(monster(GameStrategy.spawn_point)))
     }
