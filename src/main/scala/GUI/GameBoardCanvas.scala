@@ -25,8 +25,10 @@ case class Idle() extends GameBoardCanvasStatus
 
 class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 {
-    var square_size: (Int, Int) = (this.getHeight / game_logic.board.map.size()._1,
+    def obtain_square_size() = (this.getHeight / game_logic.board.map.size()._1,
       this.getWidth / game_logic.board.map.size()._2)
+      
+    var square_size: (Int, Int) = obtain_square_size()
 
     this.addMouseListener(GameBoardCanvasMouseListener)
     val alarm: Timer = new FTimer(1000/60, a =>
@@ -37,8 +39,7 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 
     def update_square_size(): Unit =
     {
-        square_size = (this.getHeight / game_logic.board.map.size()._1,
-          this.getWidth / game_logic.board.map.size()._2)
+        square_size = obtain_square_size()
     }
 
     override def paintComponent(g: Graphics)

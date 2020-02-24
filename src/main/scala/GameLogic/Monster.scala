@@ -2,7 +2,7 @@ package GameLogic
 
 import java.awt.{Color, Graphics2D}
 
-abstract class Monster extends BoardObject
+abstract class Monster(override var position : Point2DDouble) extends BoardObject
 {
     val max_hp: Double
     var hp: Double
@@ -29,24 +29,21 @@ abstract class Monster extends BoardObject
 
         position = position + new Point2DDouble(0, speed)
     }
-
-
-    def spawn(): Unit = () //TODO
 }
 
-class Wave(monster_ : Array[Point2DDouble => Monster])
+class Wave(monster_ : Array[Point2DDouble => Monster])(val game_logic: GameLogic)
 {
     val monsters: Array[Point2DDouble => Monster] = monster_
 
     def spawn(): Unit =
     {
-        //monsters.foreach((monster: Monster) => monster.spawn())
+        monsters.foreach((monster) => game_logic.spawn_monster(monster(GameStrategy.spawn_point)))
     }
 
 }
 
 
-case class Triangle(override var position: Point2DDouble) extends Monster
+case class Triangle(position: Point2DDouble) extends Monster(position)
 {
     override val max_hp: Double = 10
     override var hp: Double = max_hp

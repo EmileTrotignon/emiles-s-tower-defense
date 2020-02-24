@@ -20,7 +20,7 @@ class GameWindow extends JFrame("Emiles's Tower Defense")
         Array(true, true, true, true, false, true, true, true, true)))
         , 10
         , 10
-        , List())
+        , GameLogic.GameStrategy.levels)
     val canvas = new GameBoardCanvas(game_logic)
 
     import java.awt.BorderLayout

@@ -36,30 +36,53 @@ class BoardLogic(val map: GameMap)
     }
 }
 
-class Level(val waves: List[Wave])
+case class Level(val waves: List[GameLogic => Wave])(val game_logic: GameLogic)
 {
-    var next_waves: List[Wave] = waves
+    var next_waves: List[GameLogic => Wave] = waves
 
-    def spawn_wave: Boolean =
+    def spawn_wave(): Boolean =
     {
         next_waves match
         {
             case wave :: next =>
                 next_waves = next
-                wave.spawn()
+                wave(game_logic).spawn()
                 true
             case Nil =>
-                end()
+                try_end()
                 false
         }
     }
 
+    def try_spawn_wave() =
+    {
+        if(!(spawn_wave()))
+        {
+            try_end()
+        }
+    }
+    
+    val alarm: GUI.FTimer = new GUI.FTimer(100000/60, a => try_spawn_wave)
+    
     def start(): Unit =
     {
-        () //TODO
+        alarm.start()
     }
 
-    def end(): Unit = () //TODO
+    def can_end(): Boolean = 
+    {//s'il n'y a plus aucun monstre
+        var succes = true
+        game_logic.board.monsters.foreach(m => succes = false)
+        succes
+    }
+    
+    def try_end(): Unit =
+    {
+        if(can_end())
+        {
+            alarm.stop()
+        }
+    }
 
     def isFinished: Boolean = Nil == next_waves
 }
@@ -68,7 +91,7 @@ class PlayerLogic(var money: Double, var lives: Double)
 {
 }
 
-class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[Level])
+class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[GameLogic => Level])
 {
     val board: BoardLogic = new BoardLogic(map)
 
@@ -85,7 +108,7 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
         {
             case level :: next =>
                 next_levels = next
-                level.start()
+                level(this).start()
                 true
             case Nil => false
         }
@@ -100,4 +123,20 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
     {
         board.towers.addOne(tower)
     }
+}
+
+object GameStrategy {
+    val spawn_point = new Point2DDouble(0.5, 0.01)
+
+    val levels: List[GameLogic => Level]=
+      
+      (//level 1
+          Level(List(
+          Array((p => Triangle(p))),//wave 1.1
+          Array((p => Triangle(p)),(p => Triangle(p)))))//wave 1.2
+      ) :: (//level 2
+          Level(List(
+          Array((p => Triangle(p)),(p => Triangle(p)),(p => Triangle(p))),//wave 2.1
+          Array((p => Triangle(p)),(p => Triangle(p)))))//wave 2.2
+      ) :: Nil
 }
