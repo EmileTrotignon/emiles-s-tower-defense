@@ -35,18 +35,9 @@ class BoardLogic(val map: GameMap)
         towers.foreach(m => m.tick(this))
         bullets.foreach(m => m.tick(this))
 
-    }
-
-    def paint_board(size_info: SizeInfo, g: Graphics2D): Unit =
-    {
-        map.paint_map(size_info, g)
-        monsters.foreach(m => m.paint(size_info, g))
-        towers.foreach(m => m.paint(size_info, g))
-        bullets.foreach(m => m.paint(size_info, g))
-    }
-
-    def spawn_bullet(bullet: Bullet): Unit =
-    {
-        bullets.addOne(bullet)
+        def spawn_bullet(bullet: Bullet): Unit =
+        {
+            bullets.addOne(bullet)
+        }
     }
 }
