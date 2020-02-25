@@ -77,11 +77,11 @@ object MonstersStrategy
     val levels: List[Level] =
         (//level 1
           new Level(List(
-              new Wave(Array(new Triangle(_))), //wave 1.1
-              new Wave(Array(new Triangle(_), new Triangle(_))))) //wave 1.2
-          ) :: (//level 2
-          new Level(List(
-              new Wave(Array(new Triangle(_), new Triangle(_), new Triangle(_))), //wave 2.1
-              new Wave(Array(new Triangle(_), new Triangle(_))))) //wave 2.2
-          ) :: Nil
+              new Wave(Array(Triangle)), //wave 1.1
+              new Wave(Array(Triangle, Triangle)))) //wave 1.2
+            :: (//level 2
+            new Level(List(
+                new Wave(Array(Triangle, Triangle, Triangle)), //wave 2.1
+                new Wave(Array(Triangle, Triangle)))) //wave 2.2
+            ) :: Nil)
 }
