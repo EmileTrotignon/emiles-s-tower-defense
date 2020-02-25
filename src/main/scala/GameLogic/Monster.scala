@@ -7,6 +7,7 @@ abstract class Monster(override var position: Double2) extends BoardObject
     val max_hp: Double
     var hp: Double
     var dead: Boolean = false
+    val damage: Double
     val speed: Double
     val loot: Double
     val size: Double
@@ -16,7 +17,7 @@ abstract class Monster(override var position: Double2) extends BoardObject
         hp -= damage
     }
 
-    def die(b: BoardLogic): Unit =
+    def die(): Unit =
     {
         dead = true
     }
@@ -25,7 +26,7 @@ abstract class Monster(override var position: Double2) extends BoardObject
     {
         if (hp <= 0)
         {
-            this.die(b)
+            this.die()
         }
 
         position = position + new Double2(0, speed)
@@ -38,6 +39,7 @@ case class Triangle(position_ : Double2) extends Monster(position_)
     override val max_hp: Double = 10
     override var hp: Double = max_hp
     override val speed: Double = 0.001
+    override val damage: Double = 1
     override val loot: Double = 1
     override val size: Double = 0.05
 

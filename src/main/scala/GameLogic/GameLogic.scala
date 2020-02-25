@@ -1,19 +1,14 @@
 package GameLogic
 
-import java.awt.{Graphics2D, Rectangle}
-
 import GUI.FTimer
-
-import scala.collection.mutable._
-
-import java.awt.event._
-
 
 class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[Level])
 {
     val board: BoardLogic = new BoardLogic(map)
 
     val player: PlayerLogic = new PlayerLogic(starting_money, starting_lives)
+
+    board.monster_in_base_signal.add_callback(player.monster_in_base)
 
     val tick_interval: Int = 1000 / 60
 
@@ -56,4 +51,5 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
     {
         board.towers.addOne(tower)
     }
+
 }

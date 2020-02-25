@@ -29,6 +29,21 @@ class GameMap(val map: Array[Array[MapTile]])
         }
     }
 
+    def is_buildable(s: Int2): Boolean =
+    {
+        is_buildable(s.x, s.y)
+    }
+
+    def get_tile(i: Int, j: Int): MapTile =
+    {
+        map(j)(i)
+    }
+
+    def get_tile(s: Int2): MapTile =
+    {
+        get_tile(s.x, s.y)
+    }
+
     def paint_map(size_info: SizeInfo, g: Graphics2D): Unit =
     {
         g.setColor(Color.gray)
@@ -39,14 +54,25 @@ class GameMap(val map: Array[Array[MapTile]])
              j <- 0 until this.size()._2
              }
         {
+            get_tile(i, j) match
+            {
+                case TowerTile() =>
+                    g.setColor(Color.black)
+                    val x = j * square_size._2
+                    val y = i * square_size._1
+                    g.fillRect(x, y, square_size._2, square_size._1)
+                    g.setColor(Color.darkGray)
+                    g.drawRect(x, y, square_size._2, square_size._1)
+                case BaseTile() =>
+                    g.setColor(Color.red)
+                    val x = j * square_size._2
+                    val y = i * square_size._1
+                    g.fillRect(x, y, square_size._2, square_size._1)
+
+            }
             if (is_buildable(j, i))
             {
-                g.setColor(Color.black)
-                val x = j * square_size._2
-                val y = i * square_size._1
-                g.fillRect(x, y, square_size._2, square_size._1)
-                g.setColor(Color.darkGray)
-                g.drawRect(x, y, square_size._2, square_size._1)
+
             }
         }
     }
