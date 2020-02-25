@@ -6,7 +6,7 @@ import javax.swing.{BoxLayout, JButton, JPanel}
 
 class BuildTowersPanel(val canvas : GameBoardCanvas) extends JPanel
 {
-    def build_tower(tower_constructor: (GameLogic.Point2DInt, GameLogic.GameMap) => GameLogic.Tower)(a: ActionEvent): Unit =
+    def build_tower(tower_constructor: (GameLogic.Int2, GameLogic.GameMap) => GameLogic.Tower)(a: ActionEvent): Unit =
     {
         canvas.GameBoardCanvasMouseListener.status = BuildingTower(tower_constructor)
         cancel_button.setVisible(true)

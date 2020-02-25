@@ -2,9 +2,9 @@ package GameLogic
 
 import java.awt.{Color, Graphics2D}
 
-abstract class Tower(val square: Point2DInt = null, map: GameMap) extends BoardObject
+abstract class Tower(val square: Int2 = null, map: GameMap) extends BoardObject
 {
-    override var position: Point2DDouble = Point2DInt.square_center(square, map.width(), map.height())
+    override var position: Double2 = Int2.square_center(square, map.width(), map.height())
     val damage: Double
     val period: Int
     val reach: Int //portée exprimée en nombre de pixels
@@ -15,7 +15,7 @@ abstract class Tower(val square: Point2DInt = null, map: GameMap) extends BoardO
 }
 
 
-case class SquareTower(square_ : Point2DInt, map: GameMap) extends Tower(square_, map)
+case class SquareTower(square_ : Int2, map: GameMap) extends Tower(square_, map)
 {
 
     val damage: Double = 1
@@ -25,11 +25,15 @@ case class SquareTower(square_ : Point2DInt, map: GameMap) extends Tower(square_
 
     private var tick: Int = 0
 
-    override def paint(g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfo, g: Graphics2D): Unit =
     {
-        val pos_pixels = position.to_pixels(g.getClipBounds().width, g.getClipBounds().height)
+        val pos_pixels = size_info.logic_to_pixels(position)
+        val width: Int = (size_info.square_size._1 * 0.9).floor.toInt
+        val height: Int = (size_info.square_size._2 * 0.9).floor.toInt
+
         g.setColor(Color.GREEN)
-        g.fillRect(pos_pixels.x - 50, pos_pixels.y - 50, 100, 100)
+
+        g.fillRect(pos_pixels.x - width / 2, pos_pixels.y - height / 2, width, height)
     }
 
     override def tick(b: BoardLogic): Unit =
@@ -43,19 +47,20 @@ case class SquareTower(square_ : Point2DInt, map: GameMap) extends Tower(square_
 
     def shoot_bullet(b: BoardLogic): Unit =
     {
-        val monster = b.monsters.minBy(m => Point2DDouble.squared_dist(position, m.position))
-        val direction = Point2DDouble.normalized(monster.position - position)
-        val bullet = BaseBullet(new Point2DDouble(position), new Point2DDouble(direction))
+        val monster = b.monsters.minBy(m => Double2.squared_dist(position, m.position))
+        val direction = Double2.normalized(monster.position - position)
+        val bullet = BaseBullet(position, direction)
         b.spawn_bullet(bullet)
     }
 }
 
-class TowerType(val name: String, val constructor: (Point2DInt, GameMap) => Tower)
+class TowerType(val name: String, val constructor: (Int2, GameMap) => Tower)
 {
 
 }
 
 object Towers
 {
-    var tower_constructors: Array[TowerType] = Array(new TowerType("Square tower", SquareTower)) //TODO Reste à géger cette liste. Pour la 1ère version, on peut faire que tous les types de tower sont disponibles dès le début
+    var tower_constructors: Array[TowerType] = Array(new TowerType("Square tower", SquareTower))
+    //TODO Reste à géger cette liste. Pour la 1ère version, on peut faire que tous les types de tower sont disponibles dès le début
 }

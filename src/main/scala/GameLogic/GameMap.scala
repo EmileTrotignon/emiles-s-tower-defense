@@ -2,7 +2,7 @@ package GameLogic
 
 import java.awt.{Color, Graphics2D, Rectangle}
 
-class GameMap(val map: Array[Array[Boolean]])
+class GameMap(val map: Array[Array[MapTile]])
 {
     def size(): (Int, Int) =
     {
@@ -22,24 +22,32 @@ class GameMap(val map: Array[Array[Boolean]])
 
     def is_buildable(i: Int, j: Int): Boolean =
     {
-        map(i)(j)
+        map(j)(i) match
+        {
+            case TowerTile() => true
+            case _ => false
+        }
     }
 
-    def paint_map(g: Graphics2D, square_size: (Int, Int), bounds: Rectangle): Unit =
+    def paint_map(size_info: SizeInfo, g: Graphics2D): Unit =
     {
-        g.setColor(Color.red)
-        g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height)
-        g.setColor(Color.black)
-
+        g.setColor(Color.gray)
+        g.fillRect(0, 0, size_info.graphics_bounds.width, size_info.graphics_bounds.height)
+        val square_size = size_info.square_size
         for
             {i <- 0 until this.size()._1
              j <- 0 until this.size()._2
-             if is_buildable(i, j)
              }
         {
-            val x = j * square_size._2
-            val y = i * square_size._1
-            g.fillRect(x, y, square_size._2, square_size._1)
+            if (is_buildable(j, i))
+            {
+                g.setColor(Color.black)
+                val x = j * square_size._2
+                val y = i * square_size._1
+                g.fillRect(x, y, square_size._2, square_size._1)
+                g.setColor(Color.darkGray)
+                g.drawRect(x, y, square_size._2, square_size._1)
+            }
         }
     }
 

@@ -2,11 +2,11 @@ package GameLogic
 
 import java.awt.{Color, Graphics2D}
 
-abstract class Monster(position_ : Point2DDouble) extends BoardObject
+abstract class Monster(override var position: Double2) extends BoardObject
 {
-    override var position: Point2DDouble = new Point2DDouble(position_)
     val max_hp: Double
     var hp: Double
+    var dead: Boolean = false
     val speed: Double
     val loot: Double
     val size: Double
@@ -18,7 +18,7 @@ abstract class Monster(position_ : Point2DDouble) extends BoardObject
 
     def die(b: BoardLogic): Unit =
     {
-
+        dead = true
     }
 
     override def tick(b: BoardLogic): Unit =
@@ -28,22 +28,12 @@ abstract class Monster(position_ : Point2DDouble) extends BoardObject
             this.die(b)
         }
 
-        position = position + new Point2DDouble(0, speed)
+        position = position + new Double2(0, speed)
     }
 }
 
-class Wave(monster_ : Array[Point2DDouble => Monster])
-{
-    val monsters: Array[Point2DDouble => Monster] = monster_
 
-    def spawn(game_logic: GameLogic): Unit =
-    {
-        monsters.foreach(monster => game_logic.spawn_monster(monster(MonstersStrategy.spawn_point)))
-    }
-
-}
-
-case class Triangle(position_ : Point2DDouble) extends Monster(position_)
+case class Triangle(position_ : Double2) extends Monster(position_)
 {
     override val max_hp: Double = 10
     override var hp: Double = max_hp
@@ -51,18 +41,13 @@ case class Triangle(position_ : Point2DDouble) extends Monster(position_)
     override val loot: Double = 1
     override val size: Double = 0.05
 
-    override def paint(g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfo, g: Graphics2D): Unit =
     {
-
-        val pos_pixels = position.to_pixels(g.getClipBounds().width, g.getClipBounds().height)
         g.setColor(Color.BLUE)
-        //g.fillRect(pos_pixels.x-25, pos_pixels.y-25, 50, 50)
-        val size_pixels =
-        {
-            new Point2DDouble(size, size).to_pixels(g.getClipBounds().width, g.getClipBounds().height)
-        }
+        val pos_pixels = size_info.logic_to_pixels(position)
+        val size_pixels = size_info.logic_to_pixels(new Double2(size, size))
         g.fillOval(pos_pixels.x - size_pixels.x / 2, pos_pixels.y - size_pixels.y / 2, size_pixels.x, size_pixels.y)
-        //g.fillPolygon(Array(position.x, position.x + 10, position.x - 10), Array(position.y - 10, position.y + 10, position.y + 10), 1)
+        Graphics.LifeBar.draw_life_bar(position, size, size_info, hp, max_hp, g)
     }
 
     /*override def tick(b: BoardLogic): Unit =
@@ -70,18 +55,3 @@ case class Triangle(position_ : Point2DDouble) extends Monster(position_)
     }*/
 }
 
-object MonstersStrategy
-{
-    val spawn_point = new Point2DDouble(0.5, 0.01)
-
-    val levels: List[Level] =
-        (//level 1
-          new Level(List(
-              new Wave(Array(Triangle)), //wave 1.1
-              new Wave(Array(Triangle, Triangle)))) //wave 1.2
-            :: (//level 2
-            new Level(List(
-                new Wave(Array(Triangle, Triangle, Triangle)), //wave 2.1
-                new Wave(Array(Triangle, Triangle)))) //wave 2.2
-            ) :: Nil)
-}
