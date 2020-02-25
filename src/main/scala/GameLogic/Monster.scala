@@ -34,7 +34,7 @@ abstract class Monster(override var position: Double2) extends BoardObject
 }
 
 
-case class Triangle(position_ : Double2) extends Monster(position_)
+class Triangle(position_ : Double2) extends Monster(position_)
 {
     override val max_hp: Double = 10
     override var hp: Double = max_hp

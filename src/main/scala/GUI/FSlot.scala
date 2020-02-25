@@ -1,6 +1,0 @@
-package GUI
-
-class FSlot
-{
-
-}

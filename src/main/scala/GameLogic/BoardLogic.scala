@@ -53,10 +53,11 @@ class BoardLogic(val map: GameMap)
             map.get_tile(square) match
             {
                 case BaseTile() =>
-                    MonsterInBaseActionEvent.notifyAll()
+                    monster_in_base_signal.emit(m)
                 case _ => ()
             }
         })
+
         monsters.foreach(m => m.tick(this))
         towers.foreach(m => m.tick(this))
         bullets.foreach(m => m.tick(this))

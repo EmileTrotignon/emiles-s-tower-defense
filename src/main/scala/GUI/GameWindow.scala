@@ -27,17 +27,31 @@ class GameWindow extends JFrame("Emiles's Tower Defense")
 
     import javax.swing.JPanel
 
-    val contentPane = new JPanel(new BorderLayout)
-    contentPane.add(canvas, BorderLayout.CENTER)
+    val content_pane = new JPanel(new BorderLayout)
+    content_pane.add(canvas, BorderLayout.CENTER)
     //contentPane.setBorder(someBorder)
 
     val panel_player_actions = new PlayerActionsPanel(game_logic)
     val panel_build_towers = new BuildTowersPanel(canvas)
-    contentPane.add(panel_player_actions, BorderLayout.PAGE_END)
-    contentPane.add(panel_build_towers, BorderLayout.EAST)
-    game_logic.player_logic.updated_signal.add_callback(panel_build_towers.update_afordable_towers)
-    
-    this.setContentPane(contentPane)
+    content_pane.add(panel_player_actions, BorderLayout.PAGE_END)
+    content_pane.add(panel_build_towers, BorderLayout.EAST)
+
+    game_logic.player.updated_signal.add_callback(panel_player_actions.player_info_panel.update_labels)
+
+    def start_player_turn(): Unit =
+    {
+        this.setContentPane(content_pane)
+    }
+
+    def select_tower(action_event: ActionEvent): Unit =
+    {
+
+        /* TODO
+         ici il faut faire que les carrés cessent d'être cliquables
+         */
+
+    }
+
 
     def congratulate(): Unit =
     {

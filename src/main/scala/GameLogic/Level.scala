@@ -60,7 +60,7 @@ object Levels
 {
     val spawn_point = new Double2(0.5, 0.01)
 
-    private val triangle: Double2 => Monster = Triangle
+    private val triangle: Double2 => Monster = new Triangle(_)
     val a: List[Array[Double2 => Monster]] = List(Array(triangle), Array(triangle, triangle))
     val l = new Level(a)
     val levels: List[Level] =
