@@ -8,10 +8,11 @@ abstract class Tower(val square: Int2 = null, map: GameMap) extends BoardObject
     val damage: Double
     val period: Int
     val reach: Int //portée exprimée en nombre de pixels
-    val cost: Double
 
     def build(): Unit =
     {}
+    
+    
 }
 
 
@@ -21,7 +22,6 @@ case class SquareTower(square_ : Int2, map: GameMap) extends Tower(square_, map)
     val damage: Double = 1
     val period: Int = 20
     val reach: Int = 1 //portée exprimée en nombre de pixels
-    val cost: Double = 1
 
     private var tick: Int = 0
 
@@ -54,13 +54,13 @@ case class SquareTower(square_ : Int2, map: GameMap) extends Tower(square_, map)
     }
 }
 
-class TowerType(val name: String, val constructor: (Int2, GameMap) => Tower)
+class TowerType(val name: String, val constructor: (Int2, GameMap) => Tower, val cost: Double)
 {
 
 }
 
 object Towers
 {
-    var tower_constructors: Array[TowerType] = Array(new TowerType("Square tower", SquareTower))
-    //TODO Reste à géger cette liste. Pour la 1ère version, on peut faire que tous les types de tower sont disponibles dès le début
+    var tower_constructors: Array[TowerType] = Array(new TowerType("Square tower", SquareTower, 1))
+    //Pour la 1ère version, on peut faire que tous les types de tower sont disponibles dès le début
 }
