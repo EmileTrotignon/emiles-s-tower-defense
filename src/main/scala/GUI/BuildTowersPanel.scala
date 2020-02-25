@@ -32,6 +32,6 @@ class BuildTowersPanel(val canvas : GameBoardCanvas) extends JPanel
     cancel_button.setVisible(false)
 
     def update_afordable_towers(player: PlayerLogic){
-        buttons.foreach(b, t => b.setEnable(player.money >= t.cost))
+        builders.foreach(b, t => b.setEnable(player.money >= t.cost))
     }
 }
