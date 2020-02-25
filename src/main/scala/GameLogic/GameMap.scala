@@ -54,7 +54,7 @@ class GameMap(val map: Array[Array[MapTile]])
              j <- 0 until this.size()._2
              }
         {
-            get_tile(i, j) match
+            get_tile(j, i) match
             {
                 case TowerTile() =>
                     g.setColor(Color.black)
@@ -68,7 +68,7 @@ class GameMap(val map: Array[Array[MapTile]])
                     val x = j * square_size._2
                     val y = i * square_size._1
                     g.fillRect(x, y, square_size._2, square_size._1)
-
+                case _ => ()
             }
             if (is_buildable(j, i))
             {

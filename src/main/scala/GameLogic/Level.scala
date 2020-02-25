@@ -7,7 +7,7 @@ import GUI.FActionListener
 class Level(list: List[Array[Double2 => Monster]])
 {
 
-    val time_between_waves = 1000
+    val time_between_waves = 100
 
     private var ntick = 0
 

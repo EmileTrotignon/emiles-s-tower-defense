@@ -54,6 +54,7 @@ class BoardLogic(val map: GameMap)
             {
                 case BaseTile() =>
                     MonsterInBaseActionEvent.notifyAll()
+                case _ => ()
             }
         })
         monsters.foreach(m => m.tick(this))
