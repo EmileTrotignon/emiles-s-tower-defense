@@ -32,11 +32,11 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
       this.getWidth / game_logic.board.map.size()._2)
 
     this.addMouseListener(GameBoardCanvasMouseListener)
-    val alarm: Timer = new FTimer(1000 / 60, a =>
+    val timer: Timer = new FTimer(1000 / 60, a =>
     {
-        repaint()
+        this.repaint()
     })
-    alarm.start()
+    timer.start()
 
     override def paintComponent(g: Graphics)
     {

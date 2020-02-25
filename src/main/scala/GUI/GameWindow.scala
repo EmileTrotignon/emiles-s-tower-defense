@@ -42,21 +42,4 @@ class GameWindow extends JFrame("Emiles's Tower Defense")
     {
         this.setContentPane(content_pane)
     }
-
-    def select_tower(action_event: ActionEvent): Unit =
-    {
-
-        /* TODO
-         ici il faut faire que les carrés cessent d'être cliquables
-         */
-
-    }
-
-
-    def congratulate(): Unit =
-    {
-        /* TODO
-         ici il faut afficher qu'il n'y a plus d'autre niveau
-         */
-    }
 }
