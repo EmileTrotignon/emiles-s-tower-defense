@@ -29,7 +29,7 @@ case class SquareTower(square_ : Point2DInt, map: GameMap) extends Tower(square_
     {
         val pos_pixels = position.to_pixels(g.getClipBounds().width, g.getClipBounds().height)
         g.setColor(Color.GREEN)
-        g.fillRect(pos_pixels.x, pos_pixels.y, 50, 50)
+        g.fillRect(pos_pixels.x - 50, pos_pixels.y - 50, 100, 100)
     }
 
     override def tick(b: BoardLogic): Unit =

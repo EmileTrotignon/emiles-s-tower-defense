@@ -1,7 +1,7 @@
 package GUI
 
 import java.awt.event.{MouseEvent, MouseListener}
-import java.awt.{Graphics, Graphics2D, Toolkit}
+import java.awt.{Dimension, Graphics, Graphics2D, Toolkit}
 
 import GameLogic.{GameMap, Point2DInt, Tower}
 import javax.swing._
@@ -25,13 +25,16 @@ case class Idle() extends GameBoardCanvasStatus
 
 class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 {
-    def obtain_square_size() = (this.getHeight / game_logic.board.map.size()._1,
+
+    this.setPreferredSize(new Dimension(1000, 1000))
+
+    def get_square_size(): (Int, Int) = (this.getHeight / game_logic.board.map.size()._1,
       this.getWidth / game_logic.board.map.size()._2)
-      
-    var square_size: (Int, Int) = obtain_square_size()
+
+    var square_size: (Int, Int) = get_square_size()
 
     this.addMouseListener(GameBoardCanvasMouseListener)
-    val alarm: Timer = new FTimer(1000/60, a =>
+    val alarm: Timer = new FTimer(1000 / 60, a =>
     {
         repaint()
     })
@@ -39,12 +42,13 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 
     def update_square_size(): Unit =
     {
-        square_size = obtain_square_size()
+        square_size = get_square_size()
     }
 
     override def paintComponent(g: Graphics)
     {
-        setBounds(0, 0, 1000, 1000)
+        val minsize = math.min(g.getClipBounds.width, g.getClipBounds.height)
+        setBounds(0, 0, minsize, minsize)
         update_square_size()
         val g2 = g.asInstanceOf[Graphics2D]
         game_logic.board.paint_board(g2, square_size, this.getBounds(null))
