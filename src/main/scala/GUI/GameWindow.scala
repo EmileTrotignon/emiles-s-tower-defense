@@ -35,21 +35,9 @@ class GameWindow extends JFrame("Emiles's Tower Defense")
     val panel_build_towers = new BuildTowersPanel(canvas)
     contentPane.add(panel_player_actions, BorderLayout.PAGE_END)
     contentPane.add(panel_build_towers, BorderLayout.EAST)
-
-    def start_player_turn(): Unit =
-    {
-        this.setContentPane(contentPane)
-    }
-
-    def select_tower(action_event: ActionEvent): Unit =
-    {
-
-        /* TODO
-         ici il faut faire que les carrés cessent d'être cliquables
-         */
-
-    }
-
+    game_logic.player_logic.updated_signal.add_callback(panel_build_towers.update_afordable_towers)
+    
+    this.setContentPane(contentPane)
 
     def congratulate(): Unit =
     {
@@ -57,7 +45,4 @@ class GameWindow extends JFrame("Emiles's Tower Defense")
          ici il faut afficher qu'il n'y a plus d'autre niveau
          */
     }
-
-
-    this.start_player_turn()
 }
