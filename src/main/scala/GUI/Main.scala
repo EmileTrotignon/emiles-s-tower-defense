@@ -8,23 +8,17 @@ import javax.swing.UIManager
 object Main //extends SimpleSwingApplication
 {
     val lobby_window = new Lobby("Emiles's Tower Defense")
-    var game_window: Option[GameWindow] = None : Option[GameWindow]
-    try
-    {
-        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName)
-    }
-    catch
-    {
-        case e: Exception =>
-            println("Setting look failed")
-    }
+    var game_window: Option[GameWindow] = None: Option[GameWindow]
+
+    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName)
+
 
     def main(args: Array[String]): Unit =
     {
         lobby_window.setVisible(true)
     }
 
-    def start_game(action_event : ActionEvent): Unit =
+    def start_game(action_event: ActionEvent): Unit =
     {
         System.setProperty("sun.java2d.opengl", "true")
         lobby_window.setVisible(false)

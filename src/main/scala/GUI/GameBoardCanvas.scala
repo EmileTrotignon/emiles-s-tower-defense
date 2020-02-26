@@ -12,7 +12,7 @@ class GameBoardCanvasStatus
 
 }
 
-case class BuildingTower(constructor: (Int2, GameMap) => Tower) extends GameBoardCanvasStatus
+case class BuildingTower(cost: Double, constructor: (Int2, GameMap) => Tower) extends GameBoardCanvasStatus
 {
 
 }
@@ -27,6 +27,8 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 {
 
     this.setPreferredSize(new Dimension(1000, 1000))
+    this.setMinimumSize(new Dimension(200, 200))
+    this.setMaximumSize(new Dimension(1080, 1080))
 
     def get_square_size(): (Int, Int) = (this.getHeight / game_logic.board.map.size()._1,
       this.getWidth / game_logic.board.map.size()._2)
@@ -37,6 +39,8 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
         this.repaint()
     })
     timer.start()
+
+    val tower_built_signal: FSignal[Unit] = new FSignal[Unit]()
 
     override def paintComponent(g: Graphics)
     {
@@ -73,17 +77,19 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
             status match
             {
                 case Idle() => ()
-                case BuildingTower(constructor) =>
+                case BuildingTower(cost, constructor) =>
                     val pos = new Int2(e.getX, e.getY)
                     val pos_square = Int2.pixels_to_squares(pos, getWidth, getHeight, game_logic.board.map.width(), game_logic.board.map.height())
                     if (game_logic.board.map.is_buildable(pos_square.x, pos_square.y))
                     {
-                        val tower = constructor(pos_square, game_logic.board.map)
-                        game_logic.spawn_tower(tower)
+                        game_logic.build_tower(pos_square, cost, constructor)
                         status = Idle()
+                        tower_built_signal.emit()
                     }
+
             }
         }
+
 
         def mousePressed(e: MouseEvent): Unit =
         {

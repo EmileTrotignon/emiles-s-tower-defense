@@ -60,9 +60,20 @@ object Levels
 {
     val spawn_point = new Double2(0.5, 0.01)
 
-    private val triangle: Double2 => Monster = new Triangle(_)
-    val a: List[Array[Double2 => Monster]] = List(Array(triangle), Array(triangle, triangle))
+    private val blue_monster: Double2 => Monster = new BlueMonster(_)
+    private val dark_blue_monster: Double2 => Monster = new DarkBlueMonster(_)
+    val a: List[Array[Double2 => Monster]] = List(Array(blue_monster), Array(blue_monster, blue_monster))
     val l = new Level(a)
     val levels: List[Level] =
-        List(new Level(List(Array(triangle), Array(triangle))), new Level(List(Array(triangle, triangle, triangle), Array(triangle, triangle))))
+        List(
+            new Level(List(Array(blue_monster), Array(blue_monster))),
+            new Level(List(Array(blue_monster), Array(blue_monster), Array(blue_monster))),
+            new Level(List(Array(blue_monster), Array(blue_monster), Array(dark_blue_monster))),
+            new Level(List(Array(blue_monster), Array(blue_monster), Array(blue_monster), Array(dark_blue_monster), Array(dark_blue_monster))),
+            new Level(List(Array(dark_blue_monster), Array(dark_blue_monster), Array(blue_monster),
+                Array(blue_monster), Array(blue_monster), Array(dark_blue_monster), Array(dark_blue_monster))),
+            new Level(List(Array(dark_blue_monster), Array(dark_blue_monster), Array(blue_monster),
+                Array(blue_monster), Array(blue_monster), Array(dark_blue_monster), Array(dark_blue_monster))))
+
+
 }

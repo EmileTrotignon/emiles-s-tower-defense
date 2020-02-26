@@ -1,5 +1,7 @@
 package GameLogic
 
+import java.lang.reflect.Constructor
+
 import GUI.FTimer
 
 class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[Level])
@@ -9,7 +11,7 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
     val player: PlayerLogic = new PlayerLogic(starting_money, starting_lives)
 
     board.monster_in_base_signal.add_callback(player.monster_in_base)
-
+    board.monster_died_signal.add_callback(player.killed_monster)
     val tick_interval: Int = 1000 / 60
 
     val timer: GUI.FTimer = new FTimer(tick_interval, _ =>
@@ -47,8 +49,11 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
         board.monsters.addOne(monster)
     }
 
-    def spawn_tower(tower: Tower): Unit =
+    def build_tower(pos_square: Int2, cost: Double, constructor: (Int2, GameMap) => Tower): Unit =
     {
+        assert(cost <= player.money)
+        player.money -= cost
+        val tower = constructor(pos_square, map)
         board.towers.addOne(tower)
     }
 

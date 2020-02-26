@@ -8,10 +8,11 @@ import javax.swing._
 
 class GameWindow extends JFrame("Emiles's Tower Defense")
 {
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
     val game_logic = new GameLogic(new GameMap(Array(
         Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
         Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
-        Array(TowerTile(), TowerTile(), TowerTile(), MonsterTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
+        Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
         Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
         Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
         Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
@@ -35,11 +36,21 @@ class GameWindow extends JFrame("Emiles's Tower Defense")
     val panel_build_towers = new BuildTowersPanel(canvas)
     content_pane.add(panel_player_actions, BorderLayout.PAGE_END)
     content_pane.add(panel_build_towers, BorderLayout.EAST)
-
+    this.setContentPane(content_pane)
     game_logic.player.updated_signal.add_callback(panel_player_actions.player_info_panel.update_labels)
-
-    def start_player_turn(): Unit =
+    game_logic.player.updated_signal.add_callback(panel_build_towers.update_affordable_towers)
+    game_logic.player.updated_signal.emit(game_logic.player)
+    game_logic.player.you_lost_signal.add_callback(you_lost)
+    canvas.tower_built_signal.add_callback(_ =>
     {
-        this.setContentPane(content_pane)
+        panel_build_towers.cancel_button.setVisible(false)
+        panel_build_towers.enable_every_tower()
+    })
+
+    def you_lost(u: Unit): Unit =
+    {
+        JOptionPane.showMessageDialog(this, "You lost")
+        System.exit(0)
     }
+
 }

@@ -20,6 +20,7 @@ class BoardLogic(val map: GameMap)
     var bullets: mutable.Set[Bullet] = mutable.Set[Bullet]()
 
     val monster_in_base_signal: FSignal[Monster] = new FSignal[Monster]()
+    val monster_died_signal: FSignal[Monster] = new FSignal[Monster]()
 
     def is_deserted: Boolean = //tells whether there is still living monsters
     {
@@ -38,6 +39,10 @@ class BoardLogic(val map: GameMap)
     {
         monsters.filterInPlace(p =>
         {
+            if (p.dead)
+            {
+                monster_died_signal.emit(p)
+            }
             !p.dead && p.position.is_in_bounds()
         })
         bullets.filterInPlace(p => p.position.is_in_bounds())
