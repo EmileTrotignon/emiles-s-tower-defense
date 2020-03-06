@@ -2,9 +2,9 @@ package GameLogic
 
 import java.awt.{Color, Graphics2D, Rectangle}
 
-class GameMap(val map: Array[Array[MapTile]])
+class GameMap(private val map: Array[Array[MapTile]])
 {
-    def size(): Int2 =
+    def size: Int2 =
     {
         Int2(map.length, map(0).length)
     }
