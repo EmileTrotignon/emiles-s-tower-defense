@@ -1,17 +1,32 @@
 package GameLogic
 
-import java.awt.Rectangle
+import java.awt.{Point, Rectangle}
 
 case class Int2(x: Int, y: Int)
 {
+    def this(p: Point) =
+    {
+        this(p.x, p.y)
+    }
+
+    def /(w: Int): Int2 =
+    {
+        Int2(x / w, y / w)
+    }
+
+    def *(w: Int): Int2 =
+    {
+        Int2(x * w, y * w)
+    }
+
     def +(v: Int2): Int2 =
     {
-        new Int2(x + v.x, y + v.y)
+        Int2(x + v.x, y + v.y)
     }
 
     def -(v: Int2): Int2 =
     {
-        new Int2(x - v.x, y - v.y)
+        Int2(x - v.x, y - v.y)
     }
 
     def squared_dist_to_origin(): Int =
@@ -23,30 +38,38 @@ case class Int2(x: Int, y: Int)
     {
         Math.sqrt(this.squared_dist_to_origin())
     }
+
+    def is_in_bounds(r: Rectangle = new Rectangle(0, 0, 1, 1)): Boolean =
+    {
+        r.x <= x && r.y <= y && x <= (r.x + r.width) && y <= (r.y + r.height)
+    }
+
+    def toDouble2: Double2 =
+    {
+        Double2(x.toDouble, y.toDouble)
+    }
 }
 
 case class Double2(x: Double, y: Double)
 {
-
-
     def +(v: Double2): Double2 =
     {
-        new Double2(x + v.x, y + v.y)
+        Double2(x + v.x, y + v.y)
     }
 
     def -(v: Double2): Double2 =
     {
-        new Double2(x - v.x, y - v.y)
+        Double2(x - v.x, y - v.y)
     }
 
     def /(w: Double): Double2 =
     {
-        new Double2(x / w, y / w)
+        Double2(x / w, y / w)
     }
 
     def *(w: Double): Double2 =
     {
-        new Double2(x * w, y * w)
+        Double2(x * w, y * w)
     }
 
     def squared_dist_to_origin(): Double =
@@ -64,14 +87,9 @@ case class Double2(x: Double, y: Double)
         Double2.round(new Double2(x * width, y * height))
     }
 
-    def to_square(width: Int, height: Int): Int2 =
+    def is_in_bounds(x_ : Double = 0, y_ : Double = 0, w: Double = 1, h: Double = 1): Boolean =
     {
-        Double2.floor(new Double2(x * width, y * height))
-    }
-
-    def is_in_bounds(r: Rectangle = new Rectangle(0, 0, 1, 1)): Boolean =
-    {
-        r.x <= x && r.y <= y && x <= (r.x + r.width) && y <= (r.y + r.height)
+        x_ <= x && y_ <= y && x <= (x_ + w) && y <= (y_ + h)
     }
 }
 
@@ -92,24 +110,11 @@ object Int2
         Double2.floor(Double2(p.x.toDouble * square_width.toDouble / pixel_width.toDouble,
             p.y.toDouble * square_height.toDouble / pixel_height.toDouble))
     }
-
-    def square_corner(p: Int2, square_width: Int, square_height: Int): Double2 =
-    {
-        Double2(p.x.toDouble / square_width.toDouble, p.y.toDouble / square_height.toDouble)
-    }
-
-    def square_center(p: Int2, square_width: Int, square_height: Int): Double2 =
-    {
-        Double2((p.x.toDouble + 0.5) / square_width.toDouble, (p.y.toDouble + 0.5) / square_height.toDouble)
-    }
-
-
 }
 
 
 object Double2
 {
-
     def floor(p: Double2): Int2 =
     {
         new Int2(math.floor(p.x).toInt, math.floor(p.y).toInt)
@@ -134,6 +139,4 @@ object Double2
     {
         p / p.dist_to_origin()
     }
-
-
 }

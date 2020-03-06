@@ -49,11 +49,11 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
         board.monsters.addOne(monster)
     }
 
-    def build_tower(pos_square: Int2, cost: Double, constructor: (Int2, GameMap) => Tower): Unit =
+    def build_tower(pos_square: Int2, cost: Double, constructor: (Int2, SizeInfo) => Tower): Unit =
     {
         assert(cost <= player.money)
         player.money -= cost
-        val tower = constructor(pos_square, map)
+        val tower = constructor(pos_square, new SizeInfo(map))
         board.towers.addOne(tower)
     }
 
