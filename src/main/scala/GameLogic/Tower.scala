@@ -9,7 +9,9 @@ abstract class Tower(val square: Int2 = null, size_info: SizeInfo) extends Board
     override var position: Double2 = size_info.square_center(square)
     protected val damage: Double
     protected val period: Int
-    val reach: Double
+    protected val _reach: Double
+
+    def reach: Double = _reach
 
     def build(): Unit =
     {}

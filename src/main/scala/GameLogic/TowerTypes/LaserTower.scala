@@ -9,7 +9,7 @@ case class LaserTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_
 
     val damage: Double = 0.05
     val period: Int = 30
-    val reach: Double = 4
+    val _reach: Double = 4
 
     var shooting_monster: Option[Monster] = None
 
@@ -49,7 +49,7 @@ case class LaserTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_
     def update_laser(b: BoardLogic): Unit =
     {
         val monster = b.monsters.minBy(m => Double2.squared_dist(position, m.position))
-        if (Double2.dist(monster.position, position) <= reach)
+        if (Double2.dist(monster.position, position) <= _reach)
         {
             shooting_monster = Some(monster)
         } else

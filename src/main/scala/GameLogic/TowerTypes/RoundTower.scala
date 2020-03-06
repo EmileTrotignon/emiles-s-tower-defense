@@ -9,7 +9,7 @@ case class RoundTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_
 
     protected val damage: Double = 1
     protected val period: Int = 60
-    val reach: Double = 5 //portée exprimée en nombre de pixels
+    val _reach: Double = 5 //portée exprimée en nombre de pixels
 
     private var tick: Int = 0
 
@@ -31,7 +31,7 @@ case class RoundTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_
     def shoot_bullet(b: BoardLogic): Unit =
     {
         val monster = b.monsters.minBy(m => Double2.squared_dist(position, m.position))
-        if (Double2.dist(monster.position, position) <= reach)
+        if (Double2.dist(monster.position, position) <= _reach)
         {
             val direction = Double2.normalized(monster.position - position)
             val bullet = BigBullet(b.monsters, position, direction)
