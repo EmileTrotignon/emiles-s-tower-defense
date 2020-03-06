@@ -10,7 +10,7 @@ class BuildTowersPanel(val canvas: GameBoardCanvas) extends JPanel
 {
     def build_tower(cost: Double, tower_constructor: (GameLogic.Int2, GameLogic.GameMap) => GameLogic.Tower)(a: ActionEvent): Unit =
     {
-        canvas.GameBoardCanvasMouseListener.status = BuildingTower(cost, tower_constructor)
+        canvas.GameBoardCanvasMouseListener.status = GameBoardCanvas.BuildingTower(cost, tower_constructor)
         cancel_button.setVisible(true)
     }
 

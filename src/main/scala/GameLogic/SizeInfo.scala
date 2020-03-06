@@ -4,15 +4,15 @@ class SizeInfo(map: GameMap, val graphics_bounds: java.awt.Rectangle)
 {
     val map_size: (Int, Int) = map.size()
 
-    def square_size: (Int, Int) =
+    def square_size: Int2 =
     {
-        (graphics_bounds.width / map_size._1, graphics_bounds.height / map_size._2)
+        Int2(graphics_bounds.width / map_size._1, graphics_bounds.height / map_size._2)
     }
 
     def pixels_to_logic(p: Int2): Double2 =
     {
-        assert(false)
-        new Double2(0, 0)
+        val pdouble = p.toDouble2
+        Double2(pdouble.x / graphics_bounds.width, pdouble.y / graphics_bounds.height)
     }
 
     def logic_to_pixels(p: Double2): Int2 =
@@ -24,6 +24,11 @@ class SizeInfo(map: GameMap, val graphics_bounds: java.awt.Rectangle)
     def logic_to_square(p: Double2): Int2 =
     {
         p.to_square(map_size._1, map_size._2)
+    }
+
+    def pixels_to_square(p: Int2): Int2 =
+    {
+        logic_to_square(pixels_to_logic(p))
     }
 
     def square_center(p: Int2): Double2 =

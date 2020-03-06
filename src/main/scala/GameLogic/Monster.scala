@@ -46,10 +46,8 @@ class BlueMonster(position_ : Double2) extends Monster(position_)
     override def paint(size_info: SizeInfo, g: Graphics2D): Unit =
     {
         g.setColor(Color.CYAN)
-        val pos_pixels = size_info.logic_to_pixels(position)
-        val size_pixels = size_info.logic_to_pixels(new Double2(size, size))
-        g.fillOval(pos_pixels.x - size_pixels.x / 2, pos_pixels.y - size_pixels.y / 2, size_pixels.x, size_pixels.y)
-        Graphics.LifeBar.draw_life_bar(position, size, size_info, hp, max_hp, g)
+        Graphics.draw_oval(size_info, Double2(size, size), position, g)
+        Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
     }
 
     /*override def tick(b: BoardLogic): Unit =
@@ -68,15 +66,9 @@ class DarkBlueMonster(position_ : Double2) extends Monster(position_)
 
     override def paint(size_info: SizeInfo, g: Graphics2D): Unit =
     {
-        g.setColor(Color.BLUE)
-        val pos_pixels = size_info.logic_to_pixels(position)
-        val size_pixels = size_info.logic_to_pixels(new Double2(size, size))
-        g.fillOval(pos_pixels.x - size_pixels.x / 2, pos_pixels.y - size_pixels.y / 2, size_pixels.x, size_pixels.y)
-        Graphics.LifeBar.draw_life_bar(position, size, size_info, hp, max_hp, g)
+        g.setColor(Color.blue)
+        Graphics.draw_oval(size_info, Double2(size, size), position, g)
+        Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
     }
-
-    /*override def tick(b: BoardLogic): Unit =
-    {
-    }*/
 }
 

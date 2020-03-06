@@ -27,6 +27,11 @@ class BoardLogic(val map: GameMap)
         monsters.isEmpty
     }
 
+    def tower_at_square(square: Int2): Option[Tower] =
+    {
+        towers.find(t => t.square == square)
+    }
+
     def paint_board(size_info: SizeInfo, g: Graphics2D): Unit =
     {
         map.paint_map(size_info, g)
@@ -51,7 +56,7 @@ class BoardLogic(val map: GameMap)
             val collisions = bullets.filter(b => b.is_colliding(m))
             collisions.foreach(b =>
             {
-                m.take_damage(b.damage)
+                b.make_damage(m)
             })
             bullets = bullets.diff(collisions)
             val square = m.position.to_square(map.width(), map.height())

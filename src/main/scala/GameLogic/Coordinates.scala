@@ -1,9 +1,25 @@
 package GameLogic
 
-import java.awt.Rectangle
+import java.awt.{Point, Rectangle}
 
 case class Int2(x: Int, y: Int)
 {
+
+    def this(p: Point) =
+    {
+        this(p.x, p.y)
+    }
+
+    def /(w: Int): Int2 =
+    {
+        new Int2(x / w, y / w)
+    }
+
+    def *(w: Int): Int2 =
+    {
+        new Int2(x * w, y * w)
+    }
+
     def +(v: Int2): Int2 =
     {
         new Int2(x + v.x, y + v.y)
@@ -23,6 +39,17 @@ case class Int2(x: Int, y: Int)
     {
         Math.sqrt(this.squared_dist_to_origin())
     }
+
+    def is_in_bounds(r: Rectangle = new Rectangle(0, 0, 1, 1)): Boolean =
+    {
+        r.x <= x && r.y <= y && x <= (r.x + r.width) && y <= (r.y + r.height)
+    }
+
+    def toDouble2: Double2 =
+    {
+        Double2(x.toDouble, y.toDouble)
+    }
+
 }
 
 case class Double2(x: Double, y: Double)
@@ -102,7 +129,6 @@ object Int2
     {
         Double2((p.x.toDouble + 0.5) / square_width.toDouble, (p.y.toDouble + 0.5) / square_height.toDouble)
     }
-
 
 }
 

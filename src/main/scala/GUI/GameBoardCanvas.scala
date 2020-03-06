@@ -1,26 +1,11 @@
 package GUI
 
 import java.awt.event.{MouseEvent, MouseListener}
-import java.awt.{Dimension, Graphics, Graphics2D, Toolkit}
+import java.awt.{Color, Dimension, Graphics, Graphics2D, MouseInfo, Toolkit}
 
-import GameLogic.{GameMap, Int2, SizeInfo, Tower}
+import GameLogic.{Double2, GameMap, Int2, SizeInfo, Tower}
 import javax.swing._
-
-
-class GameBoardCanvasStatus
-{
-
-}
-
-case class BuildingTower(cost: Double, constructor: (Int2, GameMap) => Tower) extends GameBoardCanvasStatus
-{
-
-}
-
-case class Idle() extends GameBoardCanvasStatus
-{
-
-}
+import javax.swing.event.MouseInputAdapter
 
 
 class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
@@ -42,6 +27,20 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 
     val tower_built_signal: FSignal[Unit] = new FSignal[Unit]()
 
+    def paint_hovered_square(size_info: SizeInfo, square: Int2, g: Graphics2D): Unit =
+    {
+        game_logic.board.tower_at_square(square) match
+        {
+            case None => ()
+            case Some(tower) =>
+                val center = size_info.logic_to_pixels(tower.position)
+                val size = size_info.logic_to_pixels(Double2(tower.reach, tower.reach) * 2)
+                val corner = center - (size / 2)
+                g.setColor(Color.green)
+                g.drawOval(corner.x, corner.y, size.x, size.y)
+        }
+    }
+
     override def paintComponent(g: Graphics)
     {
         val minsize = math.min(g.getClipBounds.width, g.getClipBounds.height)
@@ -49,53 +48,66 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
         val g2 = g.asInstanceOf[Graphics2D]
         val size_info = new SizeInfo(game_logic.board.map, g.getClipBounds())
         game_logic.board.paint_board(size_info, g2)
+
+
+        val location = new Int2(MouseInfo.getPointerInfo.getLocation) - new Int2(this.getLocation())
+
+        if (location.is_in_bounds(getBounds()))
+        {
+            val square = size_info.pixels_to_square(location)
+            paint_hovered_square(size_info, square, g2)
+        }
         Toolkit.getDefaultToolkit.sync() // Very important for speed
     }
 
-    object GameBoardCanvasMouseListener extends MouseListener
+    object GameBoardCanvasMouseListener extends MouseInputAdapter
     {
 
-        var status: GameBoardCanvasStatus = Idle()
+        var status: GameBoardCanvas.GameBoardCanvasStatus = GameBoardCanvas.Idle()
 
-        def mouseEntered(e: MouseEvent): Unit =
-        {
-
-        }
-
-        def mouseExited(e: MouseEvent): Unit =
-        {
-
-        }
-
-        def mouseReleased(e: MouseEvent): Unit =
-        {
-
-        }
-
-        def mouseClicked(e: MouseEvent): Unit =
+        override def mouseClicked(e: MouseEvent): Unit =
         {
             status match
             {
-                case Idle() => ()
-                case BuildingTower(cost, constructor) =>
+                case GameBoardCanvas.Idle() => ()
+                case GameBoardCanvas.BuildingTower(cost, constructor) =>
                     val pos = new Int2(e.getX, e.getY)
                     val pos_square = Int2.pixels_to_squares(pos, getWidth, getHeight, game_logic.board.map.width(), game_logic.board.map.height())
-                    if (game_logic.board.map.is_buildable(pos_square.x, pos_square.y))
+                    if (game_logic.board.map.is_buildable(pos_square.x, pos_square.y) && game_logic.board.tower_at_square(pos_square).isEmpty)
                     {
                         game_logic.build_tower(pos_square, cost, constructor)
-                        status = Idle()
+                        status = GameBoardCanvas.Idle()
                         tower_built_signal.emit()
                     }
 
             }
         }
 
-
-        def mousePressed(e: MouseEvent): Unit =
+        override def mouseMoved(mouseEvent: MouseEvent): Unit =
         {
 
         }
+    }
+
+}
+
+object GameBoardCanvas
+{
+
+    class GameBoardCanvasStatus
+    {
+
+    }
+
+    case class BuildingTower(cost: Double, constructor: (Int2, GameMap) => Tower) extends GameBoardCanvasStatus
+    {
+
+    }
+
+    case class Idle() extends GameBoardCanvasStatus
+    {
 
     }
 
 }
+

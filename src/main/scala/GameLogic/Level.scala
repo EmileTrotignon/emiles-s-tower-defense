@@ -1,9 +1,5 @@
 package GameLogic
 
-import java.awt.event.ActionEvent
-
-import GUI.FActionListener
-
 class Level(list: List[Array[Double2 => Monster]])
 {
 
