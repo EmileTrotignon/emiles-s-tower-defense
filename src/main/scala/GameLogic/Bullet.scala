@@ -26,30 +26,28 @@ abstract class Bullet(var position: Double2, protected val damage: Double, val d
 }
 
 case class BaseBullet(position_ : Double2, direction: Double2)
-  extends Bullet(position_, 1, Double2.normalized(direction) * 0.007)
+  extends Bullet(position_, 1, Double2.normalized(direction) * 0.07)
 {
 
-    protected val size = 0.01
+    protected val size = 0.1
 
-    override def paint(size_info: SizeInfo, g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
     {
-        g.setColor(Color.YELLOW)
-        Graphics.draw_oval(size_info, Double2(size, size), position, g)
+        Graphics.fill_oval_countour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
     }
 }
 
 case class BigBullet(monsters: mutable.Set[Monster], position_ : Double2, direction: Double2)
-  extends Bullet(position_, 1, Double2.normalized(direction) * 0.005)
+  extends Bullet(position_, 1, Double2.normalized(direction) * 0.025)
 {
 
-    protected val size = 0.03
-    protected val zone_size = 0.1
+    protected val size = 0.3
+    protected val zone_size = 3
     protected val zone_damage: Double = damage / 2
 
-    override def paint(size_info: SizeInfo, g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
     {
-        g.setColor(Color.YELLOW)
-        Graphics.draw_oval(size_info, Double2(size, size), position, g)
+        Graphics.fill_oval_countour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
     }
 
     override def make_damage(monster: Monster): Unit =

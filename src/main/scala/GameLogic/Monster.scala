@@ -38,15 +38,14 @@ class BlueMonster(position_ : Double2) extends Monster(position_)
 {
     override val max_hp: Double = 10
     override var hp: Double = max_hp
-    override val speed: Double = 0.001
+    override val speed: Double = 0.01
     override val damage: Double = 2
     override val loot: Double = 1
-    override val size: Double = 0.05
+    override val size: Double = 0.5
 
-    override def paint(size_info: SizeInfo, g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
     {
-        g.setColor(Color.CYAN)
-        Graphics.draw_oval(size_info, Double2(size, size), position, g)
+        Graphics.fill_oval_countour(size_info, Double2(size, size), position, g, Color.cyan, Color.black)
         Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
     }
 
@@ -59,15 +58,14 @@ class DarkBlueMonster(position_ : Double2) extends Monster(position_)
 {
     override val max_hp: Double = 12
     override var hp: Double = max_hp
-    override val speed: Double = 0.0012
+    override val speed: Double = 0.012
     override val damage: Double = 4
     override val loot: Double = 2
-    override val size: Double = 0.055
+    override val size: Double = 0.5
 
-    override def paint(size_info: SizeInfo, g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
     {
-        g.setColor(Color.blue)
-        Graphics.draw_oval(size_info, Double2(size, size), position, g)
+        Graphics.fill_oval_countour(size_info, Double2(size, size), position, g, Color.blue, Color.black)
         Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
     }
 }

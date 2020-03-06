@@ -3,7 +3,7 @@ package GUI
 import java.awt.event.{MouseEvent, MouseListener}
 import java.awt.{Color, Dimension, Graphics, Graphics2D, MouseInfo, Toolkit}
 
-import GameLogic.{Double2, GameMap, Int2, SizeInfo, Tower}
+import GameLogic.{Double2, GameMap, Int2, SizeInfo, SizeInfoPixels, Tower}
 import javax.swing._
 import javax.swing.event.MouseInputAdapter
 
@@ -15,11 +15,11 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
     this.setMinimumSize(new Dimension(200, 200))
     this.setMaximumSize(new Dimension(1080, 1080))
 
-    def get_square_size(): (Int, Int) = (this.getHeight / game_logic.board.map.size()._1,
-      this.getWidth / game_logic.board.map.size()._2)
+    def get_square_size(): (Int, Int) = (this.getHeight / game_logic.board.map.size().x,
+      this.getWidth / game_logic.board.map.size().y)
 
     this.addMouseListener(GameBoardCanvasMouseListener)
-    val timer: Timer = new FTimer(1000 / 60, a =>
+    val timer: Timer = new FTimer(1000 / 60, _ =>
     {
         this.repaint()
     })
@@ -27,7 +27,7 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 
     val tower_built_signal: FSignal[Unit] = new FSignal[Unit]()
 
-    def paint_hovered_square(size_info: SizeInfo, square: Int2, g: Graphics2D): Unit =
+    def paint_hovered_square(size_info: SizeInfoPixels, square: Int2, g: Graphics2D): Unit =
     {
         game_logic.board.tower_at_square(square) match
         {
@@ -46,7 +46,7 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
         val minsize = math.min(g.getClipBounds.width, g.getClipBounds.height)
         setBounds(0, 0, minsize, minsize)
         val g2 = g.asInstanceOf[Graphics2D]
-        val size_info = new SizeInfo(game_logic.board.map, g.getClipBounds())
+        val size_info = new SizeInfoPixels(game_logic.board.map, g.getClipBounds())
         game_logic.board.paint_board(size_info, g2)
 
 
@@ -99,7 +99,7 @@ object GameBoardCanvas
 
     }
 
-    case class BuildingTower(cost: Double, constructor: (Int2, GameMap) => Tower) extends GameBoardCanvasStatus
+    case class BuildingTower(cost: Double, constructor: (Int2, SizeInfo) => Tower) extends GameBoardCanvasStatus
     {
 
     }

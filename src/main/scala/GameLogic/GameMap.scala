@@ -4,9 +4,9 @@ import java.awt.{Color, Graphics2D, Rectangle}
 
 class GameMap(val map: Array[Array[MapTile]])
 {
-    def size(): (Int, Int) =
+    def size(): Int2 =
     {
-        (map.length, map(0).length)
+        Int2(map.length, map(0).length)
     }
 
     def width(): Int =
@@ -44,14 +44,14 @@ class GameMap(val map: Array[Array[MapTile]])
         get_tile(s.x, s.y)
     }
 
-    def paint_map(size_info: SizeInfo, g: Graphics2D): Unit =
+    def paint_map(size_info: SizeInfoPixels, g: Graphics2D): Unit =
     {
         g.setColor(Color.gray)
         g.fillRect(0, 0, size_info.graphics_bounds.width, size_info.graphics_bounds.height)
         val square_size = size_info.square_size
         for
-            {i <- 0 until this.size()._1
-             j <- 0 until this.size()._2
+            {i <- 0 until this.size().x
+             j <- 0 until this.size().y
              }
         {
             val x = j * square_size.x

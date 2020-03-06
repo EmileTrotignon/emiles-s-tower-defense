@@ -19,3 +19,8 @@ case class BaseTile() extends MapTile
 {
 
 }
+
+case class SpawnTile() extends MapTile
+{
+
+}
