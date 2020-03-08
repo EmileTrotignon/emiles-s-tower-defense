@@ -29,7 +29,8 @@ abstract class Monster(override var position: Double2) extends BoardObject
             this.die()
         }
 
-        position = position + (b.routes.next_target(position) - position)*speed /*new Double2(0, speed)*/
+
+        position += Double2.normalized(b.size_info.square_center(b.routes.next_target(position)) - position) * speed
     }
 }
 
@@ -45,7 +46,7 @@ class BlueMonster(position_ : Double2) extends Monster(position_)
 
     override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
     {
-        Graphics.fill_oval_countour(size_info, Double2(size, size), position, g, Color.cyan, Color.black)
+        Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.cyan, Color.black)
         Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
     }
 
@@ -65,7 +66,7 @@ class DarkBlueMonster(position_ : Double2) extends Monster(position_)
 
     override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
     {
-        Graphics.fill_oval_countour(size_info, Double2(size, size), position, g, Color.blue, Color.black)
+        Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.blue, Color.black)
         Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
     }
 }

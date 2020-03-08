@@ -1,12 +1,16 @@
 package GameLogic
 
+import scala.io.{BufferedSource, Source}
 import java.awt.{Color, Graphics2D, Rectangle}
+
+import scala.collection.mutable.ArrayBuffer
 
 class GameMap(private val map: Array[Array[MapTile]])
 {
+
     def size: Int2 =
     {
-        Int2(map.length, map(0).length)
+        Int2(map(0).length, map.length)
     }
 
     def width(): Int =
@@ -20,18 +24,13 @@ class GameMap(private val map: Array[Array[MapTile]])
         map(0).length
     }
 
-    def is_buildable(i: Int, j: Int): Boolean =
+    def is_buildable(s: Int2): Boolean =
     {
-        map(j)(i) match
+        get_tile(s) match
         {
             case TowerTile() => true
             case _ => false
         }
-    }
-
-    def is_buildable(s: Int2): Boolean =
-    {
-        is_buildable(s.x, s.y)
     }
 
     def get_tile(i: Int, j: Int): MapTile =
@@ -48,31 +47,46 @@ class GameMap(private val map: Array[Array[MapTile]])
     {
         g.setColor(Color.gray)
         g.fillRect(0, 0, size_info.graphics_bounds.width, size_info.graphics_bounds.height)
-        val square_size = size_info.square_size
+
         for
-            {i <- 0 until this.size().x
-             j <- 0 until this.size().y
+            {i <- 0 until this.size.x
+             j <- 0 until this.size.y
              }
         {
-            val x = j * square_size.x
-            val y = i * square_size.y
-            get_tile(j, i) match
+            val sq = Int2(i, j)
+            val pos_pixels = size_info.logic_to_pixels(size_info.square_corner(sq))
+            get_tile(sq) match
             {
                 case TowerTile() =>
                     g.setColor(Color.black)
-                    g.fillRect(x, y, square_size.x, square_size.y)
+                    g.fillRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
                     g.setColor(Color.darkGray)
-                    g.drawRect(x, y, square_size.x, square_size.y)
+                    g.drawRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
                 case BaseTile() =>
                     g.setColor(Color.red)
-                    g.fillRect(x, y, square_size.x, square_size.y)
+                    g.fillRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
                 case _ => ()
-            }
-            if (is_buildable(j, i))
-            {
-
             }
         }
     }
 
+}
+
+object GameMap
+{
+    def from_file(source: BufferedSource): GameMap =
+    {
+        def string_to_row(s: String): Array[MapTile] =
+        {
+            s.toCharArray.map
+            {
+                case 'T' => TowerTile()
+                case 'B' => BaseTile()
+                case 'M' => MonsterTile()
+            }
+        }
+
+        val a: Array[Array[MapTile]] = source.getLines().map(string_to_row).toArray
+        new GameMap(a)
+    }
 }

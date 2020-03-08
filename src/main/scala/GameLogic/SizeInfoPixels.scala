@@ -1,8 +1,13 @@
 package GameLogic
 
-class SizeInfo(map: GameMap)
+case class SizeInfo(map_size: Int2)
 {
-    val map_size: Int2 = map.size()
+
+
+    def this(map: GameMap) =
+    {
+        this(map.size)
+    }
 
     def logic_to_square(p: Double2): Int2 =
     {
@@ -44,7 +49,5 @@ class SizeInfoPixels(map: GameMap, val graphics_bounds: java.awt.Rectangle) exte
     {
         logic_to_square(pixels_to_logic(p))
     }
-
-
 }
 

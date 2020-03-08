@@ -52,6 +52,7 @@ case class Int2(x: Int, y: Int)
 
 case class Double2(x: Double, y: Double)
 {
+
     def +(v: Double2): Double2 =
     {
         Double2(x + v.x, y + v.y)
@@ -105,11 +106,6 @@ object Int2
         (p1 - new Int2(p2.x, p2.y)).squared_dist_to_origin()
     }
 
-    def pixels_to_squares(p: Int2, pixel_width: Int, pixel_height: Int, square_width: Int, square_height: Int): Int2 =
-    {
-        Double2.floor(Double2(p.x.toDouble * square_width.toDouble / pixel_width.toDouble,
-            p.y.toDouble * square_height.toDouble / pixel_height.toDouble))
-    }
 }
 
 

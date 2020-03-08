@@ -43,12 +43,12 @@ package object Graphics
         g.drawLine(p1_pixels.x, p1_pixels.y, p2_pixels.x, p2_pixels.y)
     }
 
-    def fill_oval_countour(size_info: SizeInfoPixels, size: Double2, position: Double2, g: Graphics2D,
-                           color_inside: Color, color_countour: Color): Unit =
+    def fill_oval_contour(size_info: SizeInfoPixels, size: Double2, position: Double2, g: Graphics2D,
+                          color_inside: Color, color_contour: Color): Unit =
     {
         g.setColor(color_inside)
         fill_oval(size_info: SizeInfoPixels, size: Double2, position: Double2, g: Graphics2D)
-        g.setColor(color_countour)
+        g.setColor(color_contour)
         draw_oval(size_info: SizeInfoPixels, size: Double2, position: Double2, g: Graphics2D)
 
     }

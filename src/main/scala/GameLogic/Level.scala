@@ -54,7 +54,8 @@ class Level(list: List[Array[Double2 => Monster]])
 
 object Levels
 {
-    val spawn_point = Double2(4.5, 0)
+    val spawn_point = Double2(0, 9.5)
+
 
     private val blue_monster: Double2 => Monster = new BlueMonster(_)
     private val dark_blue_monster: Double2 => Monster = new DarkBlueMonster(_)

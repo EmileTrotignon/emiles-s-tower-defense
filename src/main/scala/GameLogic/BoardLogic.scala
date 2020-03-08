@@ -9,7 +9,10 @@ import scala.collection.mutable
 
 class BoardLogic(val map: GameMap)
 {
+
+    val size_info = new SizeInfo(map)
     val routes = new Routes(map)
+
     object MonsterInBaseActionEvent extends AWTEvent(BoardLogic.this, 0)
     {
 

@@ -33,7 +33,7 @@ case class BaseBullet(position_ : Double2, direction: Double2)
 
     override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
     {
-        Graphics.fill_oval_countour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
+        Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
     }
 }
 
@@ -47,7 +47,7 @@ case class BigBullet(monsters: mutable.Set[Monster], position_ : Double2, direct
 
     override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
     {
-        Graphics.fill_oval_countour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
+        Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
     }
 
     override def make_damage(monster: Monster): Unit =
