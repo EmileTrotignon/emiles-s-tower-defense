@@ -43,30 +43,36 @@ class GameMap(private val map: Array[Array[MapTile]])
         get_tile(s.x, s.y)
     }
 
-    def paint_map(size_info: SizeInfoPixels, g: Graphics2D): Unit =
+    def paint_map(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
-        g.setColor(Color.gray)
-        g.fillRect(0, 0, size_info.graphics_bounds.width, size_info.graphics_bounds.height)
-
-        for
-            {i <- 0 until this.size.x
-             j <- 0 until this.size.y
-             }
+        layer match
         {
-            val sq = Int2(i, j)
-            val pos_pixels = size_info.logic_to_pixels(size_info.square_corner(sq))
-            get_tile(sq) match
-            {
-                case TowerTile() =>
-                    g.setColor(Color.black)
-                    g.fillRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
-                    g.setColor(Color.darkGray)
-                    g.drawRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
-                case BaseTile() =>
-                    g.setColor(Color.red)
-                    g.fillRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
-                case _ => ()
-            }
+            case Layers.map =>
+
+                g.setColor(Color.gray)
+                g.fillRect(0, 0, size_info.graphics_bounds.width, size_info.graphics_bounds.height)
+
+                for
+                    {i <- 0 until this.size.x
+                     j <- 0 until this.size.y
+                     }
+                {
+                    val sq = Int2(i, j)
+                    val pos_pixels = size_info.logic_to_pixels(size_info.square_corner(sq))
+                    get_tile(sq) match
+                    {
+                        case TowerTile() =>
+                            g.setColor(Color.black)
+                            g.fillRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
+                            g.setColor(Color.darkGray)
+                            g.drawRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
+                        case BaseTile() =>
+                            g.setColor(Color.red)
+                            g.fillRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
+                        case _ => ()
+                    }
+                }
+            case _ => ()
         }
     }
 

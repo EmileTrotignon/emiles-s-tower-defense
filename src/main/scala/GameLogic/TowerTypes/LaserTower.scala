@@ -15,19 +15,22 @@ case class LaserTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_
 
     private var tick: Int = 0
 
-    override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
-        g.setColor(Color.yellow)
-
-        shooting_monster match
+        layer match
         {
-            case Some(monster) => Graphics.draw_line(size_info, position, monster.position, g)
-            case None => ()
+            case Layers.towers =>
+                g.setColor(Color.green)
+                Graphics.fill_oval(size_info, size_info.pixels_to_logic(size_info.square_size) * .9, position, g)
+            case Layers.bullets =>
+                g.setColor(Color.yellow)
+                shooting_monster match
+                {
+                    case Some(monster) => Graphics.draw_line(size_info, position, monster.position, g)
+                    case None => ()
+                }
+            case _ => ()
         }
-
-        g.setColor(Color.green)
-        Graphics.fill_oval(size_info, size_info.pixels_to_logic(size_info.square_size) * .9, position, g)
-
     }
 
     override def tick(b: BoardLogic): Unit =

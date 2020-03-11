@@ -6,7 +6,7 @@ abstract class BoardObject
 {
   var position: Double2 //position sur l'image (pas sur la grille)
 
-  def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit
+  def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit
 
   def tick(b: BoardLogic): Unit
 

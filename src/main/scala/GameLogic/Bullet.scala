@@ -4,8 +4,10 @@ import java.awt.{Color, Graphics2D}
 
 import scala.collection.mutable
 
-abstract class Bullet(var position: Double2, protected val damage: Double, val direction_and_speed: Double2) extends BoardObject
+abstract class Bullet() extends BoardObject
 {
+    protected val damage: Double
+    val direction_and_speed: Double2
 
     protected val size: Double
 
@@ -23,32 +25,26 @@ abstract class Bullet(var position: Double2, protected val damage: Double, val d
     {
         monster.take_damage(damage)
     }
-}
 
-case class BaseBullet(position_ : Double2, direction: Double2)
-  extends Bullet(position_, 1, Double2.normalized(direction) * 0.07)
-{
-
-    protected val size = 0.1
-
-    override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
-        Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
+        layer match
+        {
+            case Layers.bullets =>
+                Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
+            case _ => ()
+        }
+
     }
 }
 
-case class BigBullet(monsters: mutable.Set[Monster], position_ : Double2, direction: Double2)
-  extends Bullet(position_, 1, Double2.normalized(direction) * 0.025)
+abstract class ZoneDamageBullet
+  extends Bullet
 {
+    protected val monsters: mutable.Set[Monster]
+    protected val zone_size: Double
+    protected val zone_damage: Double
 
-    protected val size = 0.3
-    protected val zone_size = 3
-    protected val zone_damage: Double = damage / 2
-
-    override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
-    {
-        Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
-    }
 
     override def make_damage(monster: Monster): Unit =
     {

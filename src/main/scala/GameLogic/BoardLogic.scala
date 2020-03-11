@@ -35,13 +35,13 @@ class BoardLogic(val map: GameMap)
         towers.find(t => t.square == square)
     }
 
-    def paint_board(size_info: SizeInfoPixels, g: Graphics2D): Unit =
+    def paint_board(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
-        map.paint_map(size_info, g)
+        map.paint_map(size_info, layer, g)
 
-        monsters.foreach(m => m.paint(size_info, g))
-        towers.foreach(t => t.paint(size_info, g))
-        bullets.foreach(b => b.paint(size_info, g))
+        monsters.foreach(m => m.paint(size_info, layer, g))
+        towers.foreach(t => t.paint(size_info, layer, g))
+        bullets.foreach(b => b.paint(size_info, layer, g))
     }
 
     def tick_board(): Unit =

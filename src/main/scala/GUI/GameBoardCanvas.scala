@@ -57,7 +57,9 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 
         setBounds(0, 0, bounds.x, bounds.y)
         val g2 = g.asInstanceOf[Graphics2D]
-        game_logic.board.paint_board(size_info, g2)
+
+        for (layer <- GameLogic.Layers.min_layer to GameLogic.Layers.max_layer)
+            game_logic.board.paint_board(size_info, layer, g2)
 
 
         val location = new Int2(MouseInfo.getPointerInfo.getLocation) - new Int2(this.getLocation())

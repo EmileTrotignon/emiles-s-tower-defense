@@ -44,15 +44,17 @@ class BlueMonster(position_ : Double2) extends Monster(position_)
     override val loot: Double = 1
     override val size: Double = 0.5
 
-    override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
-        Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.cyan, Color.black)
-        Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
+        layer match
+        {
+            case Layers.monster =>
+                Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.cyan, Color.black)
+            case Layers.life_bars =>
+                Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
+            case _ => ()
+        }
     }
-
-    /*override def tick(b: BoardLogic): Unit =
-    {
-    }*/
 }
 
 class DarkBlueMonster(position_ : Double2) extends Monster(position_)
@@ -64,10 +66,16 @@ class DarkBlueMonster(position_ : Double2) extends Monster(position_)
     override val loot: Double = 2
     override val size: Double = 0.5
 
-    override def paint(size_info: SizeInfoPixels, g: Graphics2D): Unit =
+    override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
-        Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.blue, Color.black)
-        Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
+        layer match
+        {
+            case Layers.monster =>
+                Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.blue, Color.black)
+            case Layers.life_bars =>
+                Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
+            case _ => ()
+        }
     }
 }
 
