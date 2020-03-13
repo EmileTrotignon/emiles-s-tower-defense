@@ -3,7 +3,7 @@ package GameLogic
 object Layers
 {
     val map = 0
-    val bullets = 3
+    val bullets = 1
     val monster = 2
     val towers = 2
     val life_bars = 3

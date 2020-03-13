@@ -52,9 +52,9 @@ class BoardLogic(val map: GameMap)
             {
                 monster_died_signal.emit(p)
             }
-            !p.dead && p.position.is_in_bounds(0, 0, map.width().toDouble, map.height().toDouble)
+            !p.dead && p.position.is_in_bounds(0, 0, map.width.toDouble, map.height.toDouble)
         })
-        bullets.filterInPlace(p => p.position.is_in_bounds(0, 0, map.width().toDouble, map.height().toDouble))
+        bullets.filterInPlace(p => p.position.is_in_bounds(0, 0, map.width.toDouble, map.height.toDouble))
         monsters.foreach(m =>
         {
             val collisions = bullets.filter(b => b.is_colliding(m))
@@ -80,6 +80,12 @@ class BoardLogic(val map: GameMap)
     def spawn_bullet(bullet: Bullet): Unit =
     {
         bullets.addOne(bullet)
+    }
+
+    def spawn_monster(monster_constructor: Double2 => Monster, square: Int2): Unit =
+    {
+        val position = square.toDouble2 + Double2.random()
+        monsters.addOne(monster_constructor(position))
     }
 }
 

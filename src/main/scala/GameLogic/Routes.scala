@@ -13,11 +13,13 @@ object closer_square extends Ordering[(Int2, Int)]
 
 class Routes(map: GameMap)
 {
+
+    val size_info = new SizeInfo(map)
     var routes: Map[Int2, (Int2, Int)] = Map[Int2, (Int2, Int)]()
 
     def square_neighbours: Array[Int2] = Array(Int2(1, 0), Int2(-1, 0), Int2(0, 1), Int2(0, -1))
 
-    def create_routes(): Unit =
+    def update_routes(): Unit =
     {
 
         val next_squares: mutable.PriorityQueue[(Int2, Int)] = mutable.PriorityQueue[(Int2, Int)]()(Ordering.by((s: (Int2, Int)) => -s._2))
@@ -33,6 +35,13 @@ class Routes(map: GameMap)
                 case BaseTile() =>
                     next_squares += (sq -> 0)
                     routes += (sq -> (sq, 0))
+                case TowerTile() =>
+                    val destination = map.iterator.filter(
+                        sq => map.get_tile(sq) == MonsterTile()
+                    ).minBy(
+                        sq2 => Double2.squared_dist(size_info.square_center(sq), size_info.square_center(sq2))
+                    )
+                    routes += (sq -> (destination, 0))
                 case _ => ()
             }
         }
@@ -67,9 +76,11 @@ class Routes(map: GameMap)
             }
             )
         }
+
+
     }
 
-    create_routes()
+    update_routes()
 
     def next_target(position: Double2): Int2 =
     {

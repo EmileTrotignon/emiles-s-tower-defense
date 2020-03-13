@@ -6,7 +6,7 @@ class Wave(monster_ : Array[Double2 => Monster])
 
     def spawn(game_logic: GameLogic): Unit =
     {
-        monsters.foreach(monster => game_logic.spawn_monster(monster(Levels.spawn_point)))
+        monsters.foreach(monster => game_logic.board.spawn_monster(monster, Levels.spawn_tile))
     }
 
 }

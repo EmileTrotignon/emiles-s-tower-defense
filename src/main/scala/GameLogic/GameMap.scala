@@ -13,15 +13,15 @@ class GameMap(private val map: Array[Array[MapTile]])
         Int2(map(0).length, map.length)
     }
 
-    def width(): Int =
+    def width: Int =
     {
-        map.length
+        size.x
     }
 
 
-    def height(): Int =
+    def height: Int =
     {
-        map(0).length
+        size.y
     }
 
     def is_buildable(s: Int2): Boolean =
@@ -75,6 +75,12 @@ class GameMap(private val map: Array[Array[MapTile]])
             case _ => ()
         }
     }
+
+    def iterator: Seq[Int2] =
+        for
+            {i <- 0 until size.x
+             j <- 0 until size.y
+             } yield Int2(i, j)
 
 }
 

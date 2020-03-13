@@ -44,10 +44,6 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
           }
     }
 
-    def spawn_monster(monster: Monster): Unit =
-    {
-        board.monsters.addOne(monster)
-    }
 
     def build_tower(pos_square: Int2, cost: Double, constructor: (Int2, SizeInfo) => Tower): Unit =
     {

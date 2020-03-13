@@ -135,4 +135,20 @@ object Double2
     {
         p / p.dist_to_origin()
     }
+
+    def random_gaussian(): Double2 =
+    {
+        Double2(scala.util.Random.nextGaussian(), scala.util.Random.nextGaussian())
+    }
+
+    def random(): Double2 =
+    {
+        Double2(scala.util.Random.nextDouble(), scala.util.Random.nextDouble())
+    }
+
+    def random_normalised(): Double2 =
+    {
+        normalized(random() - Double2(0.5, 0.5))
+    }
+
 }
