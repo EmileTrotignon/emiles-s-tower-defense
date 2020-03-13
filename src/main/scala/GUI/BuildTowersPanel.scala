@@ -30,7 +30,11 @@ class BuildTowersPanel(val canvas: GameBoardCanvas) extends JPanel
     val builders: Array[BuildTowerButton] = GameLogic.Towers.tower_constructors.map(
         (t: GameLogic.TowerType) =>
         {
-            val b = new BuildTowerButton(t, this)
+            val b = new BuildTowerButton(t, (a: ActionEvent) =>
+            {
+                build_tower(t.cost, t.constructor)(a)
+                builders.foreach(b => b.buildable_interface = false)
+            })
             this.add(b)
             b
         })

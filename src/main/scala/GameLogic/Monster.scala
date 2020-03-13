@@ -31,11 +31,12 @@ abstract class Monster(override var position: Double2) extends BoardObject
 
 
         val vector_to_target = Double2.normalized(b.size_info.square_center(b.routes.next_target(position)) - position)
-        val closest_monster = b.monsters.minBy(m => Double2.squared_dist(m.position, position))
+        val closest_monster = b.monsters.filter(m => m != this).minBy(m => Double2.squared_dist(m.position, position))
         val vector_from_closest_monster = Double2.normalized(position - closest_monster.position)
-        val distance_of_closest_monster = Double2.dist(position, closest_monster.position)
+        val distance_of_closest_monster = Double2.squared_dist(position, closest_monster.position)
+        val anti_frotteur_component = vector_from_closest_monster / (distance_of_closest_monster + 0.1)
         val random_component = Double2.random_normalised()
-        position += Double2.normalized(vector_to_target + random_component) * speed
+        position += Double2.normalized(vector_to_target + anti_frotteur_component * 0.2 + random_component * 0.1) * speed
     }
 }
 

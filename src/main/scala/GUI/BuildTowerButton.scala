@@ -4,13 +4,8 @@ import java.awt.event.ActionEvent
 
 import GameLogic.TowerType
 
-class BuildTowerButton(val tower_type: TowerType, panel: BuildTowersPanel)
-  extends FButton(s"${tower_type.name} : ${tower_type.cost}",
-      (a: ActionEvent) =>
-      {
-          panel.build_tower(tower_type.cost, tower_type.constructor)(a)
-          panel.builders.foreach(b => b.buildable_interface = false)
-      })
+class BuildTowerButton(tower_type: TowerType, action: ActionEvent => Unit)
+  extends FButton(s"${tower_type.name} : ${tower_type.cost}", action)
 {
     private var _buildable_interface = true
 
