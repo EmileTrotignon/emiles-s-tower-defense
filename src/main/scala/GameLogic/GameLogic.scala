@@ -1,10 +1,9 @@
 package GameLogic
 
-import java.lang.reflect.Constructor
-
 import GUI.FTimer
+import GameLogic.Towers.Tower
 
-class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[Level])
+class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[Wave])
 {
     val board: BoardLogic = new BoardLogic(map)
 
@@ -26,7 +25,7 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
     })
     timer.start()
 
-    var current_level: Level = _
+    var current_level: Wave = _
 
     var is_finished: Boolean = false
 

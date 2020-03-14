@@ -1,9 +1,9 @@
 package GameLogic
 
-import java.awt.event.ActionEvent
-import java.awt.{AWTEvent, Graphics2D, Rectangle}
+import java.awt.{AWTEvent, Graphics2D}
 
 import GUI.FSignal
+import GameLogic.Towers.Tower
 
 import scala.collection.mutable
 

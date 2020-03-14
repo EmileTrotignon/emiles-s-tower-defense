@@ -1,8 +1,9 @@
-package GameLogic.TowerTypes
+package GameLogic.Towers
 
-import java.awt.{Color, Graphics2D}
+import java.awt.Color
 
 import GameLogic._
+import Graphics.{Drawing, DrawingElement, Square}
 
 case class SquareTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info: SizeInfo)
 {
@@ -11,6 +12,7 @@ case class SquareTower(square_ : Int2, size_info: SizeInfo) extends Tower(square
     protected val period: Int = 20
     protected val _reach: Double = 2
     protected val bullet_speed = 0.07
+    override val drawing: Drawing = new Drawing(Array(DrawingElement(filled_up = true, Color.green, Square.unit)))
 
     private var tick: Int = 0
 
@@ -22,21 +24,6 @@ case class SquareTower(square_ : Int2, size_info: SizeInfo) extends Tower(square
         override protected val size: Double = 0.1
     }
 
-    override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
-    {
-        layer match
-        {
-            case Layers.towers =>
-                val pos_pixels = size_info.logic_to_pixels(position)
-                val width: Int = (size_info.square_size.x * 0.9).floor.toInt
-                val height: Int = (size_info.square_size.y * 0.9).floor.toInt
-
-                g.setColor(Color.GREEN)
-
-                g.fillRect(pos_pixels.x - width / 2, pos_pixels.y - height / 2, width, height)
-            case _ => ()
-        }
-    }
 
     override def tick(b: BoardLogic): Unit =
     {

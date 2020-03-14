@@ -2,6 +2,8 @@ package GameLogic
 
 import java.awt.{Color, Graphics2D}
 
+import Graphics.{Drawing, DrawingElement}
+
 import scala.collection.mutable
 
 abstract class Bullet() extends BoardObject
@@ -9,7 +11,11 @@ abstract class Bullet() extends BoardObject
     protected val damage: Double
     val direction_and_speed: Double2
 
-    protected val size: Double
+    override val drawing: Drawing = new Graphics.Drawing(Array(
+        DrawingElement(filled_up = true, Color.yellow, Graphics.Circle.unit),
+        DrawingElement(filled_up = false, Color.black, Graphics.Circle.unit)))
+
+    override protected val size: Double
 
     override def tick(b: BoardLogic): Unit =
     {
@@ -31,7 +37,7 @@ abstract class Bullet() extends BoardObject
         layer match
         {
             case Layers.bullets =>
-                Graphics.fill_oval_contour(size_info, Double2(size, size), position, g, Color.yellow, Color.black)
+                super.paint(size_info, layer, g)
             case _ => ()
         }
 

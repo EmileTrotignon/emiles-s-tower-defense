@@ -1,9 +1,10 @@
 package GUI
 
-import java.awt.event.{MouseEvent, MouseListener}
-import java.awt.{Color, Dimension, Graphics, Graphics2D, MouseInfo, Toolkit}
+import java.awt.event.MouseEvent
+import java.awt._
 
-import GameLogic.{Double2, GameMap, Int2, SizeInfo, SizeInfoPixels, Tower}
+import GameLogic.Towers.Tower
+import GameLogic.{Double2, Int2, SizeInfo, SizeInfoPixels}
 import javax.swing._
 import javax.swing.event.MouseInputAdapter
 

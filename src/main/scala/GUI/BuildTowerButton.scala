@@ -2,7 +2,7 @@ package GUI
 
 import java.awt.event.ActionEvent
 
-import GameLogic.TowerType
+import GameLogic.Towers.TowerType
 
 class BuildTowerButton(tower_type: TowerType, action: ActionEvent => Unit)
   extends FButton(s"${tower_type.name} : ${tower_type.cost}", action)

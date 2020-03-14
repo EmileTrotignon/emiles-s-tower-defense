@@ -2,13 +2,13 @@ package GUI
 
 import java.awt.event.ActionEvent
 
-import GameLogic._
-
-import javax.swing.{BoxLayout, JButton, JPanel}
+import GameLogic.{Towers, _}
+import _root_.GameLogic.Towers.{Tower, TowerType}
+import javax.swing.{BoxLayout, JPanel}
 
 class BuildTowersPanel(val canvas: GameBoardCanvas) extends JPanel
 {
-    def build_tower(cost: Double, tower_constructor: (GameLogic.Int2, GameLogic.SizeInfo) => GameLogic.Tower)(a: ActionEvent): Unit =
+    def build_tower(cost: Double, tower_constructor: (GameLogic.Int2, GameLogic.SizeInfo) => Tower)(a: ActionEvent): Unit =
     {
         canvas.GameBoardCanvasMouseListener.status = GameBoardCanvas.BuildingTower(cost, tower_constructor)
         cancel_button.setVisible(true)
@@ -27,8 +27,8 @@ class BuildTowersPanel(val canvas: GameBoardCanvas) extends JPanel
 
     this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS))
 
-    val builders: Array[BuildTowerButton] = GameLogic.Towers.tower_constructors.map(
-        (t: GameLogic.TowerType) =>
+    val builders: Array[BuildTowerButton] = Towers.Tower.tower_constructors.map(
+        (t: TowerType) =>
         {
             val b = new BuildTowerButton(t, (a: ActionEvent) =>
             {

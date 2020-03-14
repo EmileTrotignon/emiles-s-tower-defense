@@ -1,6 +1,4 @@
-package GameLogic.TowerTypes
-
-import java.awt.{Color, Graphics2D}
+package GameLogic.Towers
 
 import GameLogic._
 
@@ -23,18 +21,6 @@ case class RoundTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_
         override protected val zone_damage: Double = RoundTower.this.damage
         override val direction_and_speed: Double2 = Double2.normalized(direction) * bullet_speed
         override val size: Double = 0.3
-    }
-
-    override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
-    {
-        layer match
-        {
-            case Layers.towers =>
-                g.setColor(Color.GREEN)
-                Graphics.fill_oval(size_info, size_info.pixels_to_logic(size_info.square_size) * .9, position, g)
-            case _ => ()
-        }
-
     }
 
     override def tick(b: BoardLogic): Unit =

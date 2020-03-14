@@ -1,4 +1,4 @@
-package GameLogic.TowerTypes
+package GameLogic.Towers
 
 import java.awt.{Color, Graphics2D}
 
@@ -15,13 +15,13 @@ case class LaserTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_
 
     private var tick: Int = 0
 
+
     override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
         layer match
         {
             case Layers.towers =>
-                g.setColor(Color.green)
-                Graphics.fill_oval(size_info, size_info.pixels_to_logic(size_info.square_size) * .9, position, g)
+                super.paint(size_info, layer, g)
             case Layers.bullets =>
                 g.setColor(Color.yellow)
                 shooting_monster match
