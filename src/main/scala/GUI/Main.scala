@@ -1,13 +1,13 @@
 
 package GUI
 
-import java.awt.event.ActionEvent
-
+import GameLogic.GameLogic
 import javax.swing.UIManager
 
 object Main //extends SimpleSwingApplication
 {
     val lobby_window = new Lobby("Emiles's Tower Defense")
+    lobby_window.start_game_signal.add_callback(game_logic => start_game(game_logic))
     var game_window: Option[GameWindow] = None: Option[GameWindow]
 
     UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName)
@@ -18,11 +18,11 @@ object Main //extends SimpleSwingApplication
         lobby_window.setVisible(true)
     }
 
-    def start_game(action_event: ActionEvent): Unit =
+    def start_game(game_logic: GameLogic): Unit =
     {
         System.setProperty("sun.java2d.opengl", "true")
         lobby_window.setVisible(false)
-        game_window = Some(new GameWindow())
+        game_window = Some(new GameWindow(game_logic))
         game_window match
         {
             case None => throw new RuntimeException()

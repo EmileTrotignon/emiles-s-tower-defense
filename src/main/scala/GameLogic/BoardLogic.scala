@@ -3,6 +3,7 @@ package GameLogic
 import java.awt.{AWTEvent, Graphics2D}
 
 import GUI.FSignal
+import GameLogic.Monsters.Monster
 import GameLogic.Towers.Tower
 
 import scala.collection.mutable

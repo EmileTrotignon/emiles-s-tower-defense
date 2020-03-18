@@ -3,8 +3,9 @@ package GameLogic.Towers
 import java.awt.{Color, Graphics2D}
 
 import GameLogic._
+import _root_.GameLogic.Monsters.Monster
 
-case class LaserTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
+class LaserTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
 {
 
     val damage: Double = 0.05
@@ -51,7 +52,7 @@ case class LaserTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_
 
     def update_laser(b: BoardLogic): Unit =
     {
-        val monster = b.monsters.minBy(m => Double2.squared_dist(position, m.position))
+        val monster = b.monsters.minBy(m => Double2.squared_dist(_position, m.position))
         if (Double2.dist(monster.position, position) <= _reach)
         {
             shooting_monster = Some(monster)

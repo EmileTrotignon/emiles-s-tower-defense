@@ -1,6 +1,8 @@
 package GameLogic
 
-class Wave(list: List[Array[Double2 => Monster]])
+import GameLogic.Monsters.Monster
+
+class Wave(list: List[Map[Double2 => Monster, Int]], val spawn_tile: Int2)
 {
 
     val time_between_waves = 100
@@ -18,9 +20,9 @@ class Wave(list: List[Array[Double2 => Monster]])
     {
         next_subwaves match
         {
-            case wave :: next =>
+            case subwave :: next =>
                 next_subwaves = next
-                wave.spawn(game_logic)
+                subwave.spawn(game_logic, spawn_tile)
             case Nil => ()
         }
     }
@@ -52,40 +54,3 @@ class Wave(list: List[Array[Double2 => Monster]])
     }
 }
 
-object Levels
-{
-    val spawn_tile: Int2 = Int2(0, 9)
-
-
-    private val cyan_monster: Double2 => Monster = new CyanMonster(_)
-    private val blue_monster: Double2 => Monster = new BlueMonster(_)
-    val a: List[Array[Double2 => Monster]] = List(Array(cyan_monster), Array(cyan_monster, cyan_monster))
-    val l = new Wave(a)
-    val levels: List[Wave] =
-        List(
-            new Wave(List(
-                Array(cyan_monster, cyan_monster, cyan_monster),
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster))),
-            new Wave(List(
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster),
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster),
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster))),
-            new Wave(List(
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, blue_monster, cyan_monster, cyan_monster, cyan_monster),
-                Array(cyan_monster, blue_monster, blue_monster, blue_monster, cyan_monster, cyan_monster, cyan_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster))),
-            new Wave(List(
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster))),
-            new Wave(List(
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster))),
-            new Wave(List(Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster))))
-
-
-}

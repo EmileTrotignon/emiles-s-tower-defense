@@ -2,6 +2,7 @@ package GameLogic
 
 import java.awt.{Color, Graphics2D}
 
+import GameLogic.Monsters.Monster
 import Graphics.{Drawing, DrawingElement}
 
 import scala.collection.mutable
@@ -9,17 +10,15 @@ import scala.collection.mutable
 abstract class Bullet() extends BoardObject
 {
     protected val damage: Double
-    val direction_and_speed: Double2
+    protected val speed: Double
 
     override val drawing: Drawing = new Graphics.Drawing(Array(
         DrawingElement(filled_up = true, Color.yellow, Graphics.Circle.unit),
         DrawingElement(filled_up = false, Color.black, Graphics.Circle.unit)))
 
-    override protected val size: Double
-
     override def tick(b: BoardLogic): Unit =
     {
-        position = position + direction_and_speed
+        _position = position + direction * speed
     }
 
     def is_colliding(monster: Monster): Boolean =
@@ -55,7 +54,7 @@ abstract class ZoneDamageBullet
     override def make_damage(monster: Monster): Unit =
     {
         super.make_damage(monster)
-        monsters.filter(m => (Double2.dist(position, m.position) <= zone_size)).foreach(m =>
+        monsters.filter(m => (Double2.dist(_position, m.position) <= zone_size)).foreach(m =>
         {
             m.take_damage(zone_damage)
         })

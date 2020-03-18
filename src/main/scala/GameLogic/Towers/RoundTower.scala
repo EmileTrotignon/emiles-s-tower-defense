@@ -1,26 +1,28 @@
 package GameLogic.Towers
 
 import GameLogic._
+import _root_.GameLogic.Monsters.Monster
 
 import scala.collection.mutable
 
-case class RoundTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
+class RoundTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
 {
 
-    protected val damage: Double = 1.5
-    protected val period: Int = 60
-    val _reach: Double = 5 //portée exprimée en nombre de pixels
+    override protected val damage: Double = 1.5
+    override protected val period: Int = 60
+    override protected val _reach: Double = 5
 
     private var tick: Int = 0
     private val bullet_speed = 0.025
 
-    protected class TBullet(direction: Double2, override protected val monsters: mutable.Set[Monster], override var position: Double2) extends ZoneDamageBullet
+    protected class TBullet(var __direction: Double2, override protected val monsters: mutable.Set[Monster], override var _position: Double2) extends ZoneDamageBullet
     {
+        _direction = __direction
         override val zone_size: Double = 3
         override protected val damage: Double = 0
         override protected val zone_damage: Double = RoundTower.this.damage
-        override val direction_and_speed: Double2 = Double2.normalized(direction) * bullet_speed
-        override val size: Double = 0.3
+        override val speed: Double = bullet_speed
+        override val _size: Double = 0.3
     }
 
     override def tick(b: BoardLogic): Unit =

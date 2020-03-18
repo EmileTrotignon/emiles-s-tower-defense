@@ -1,27 +1,13 @@
 package GUI
 
-import java.awt.event.ActionEvent
-
 import GameLogic._
 import javax.swing._
 
 
-class GameWindow extends JFrame("Emiles's Tower Defense")
+class GameWindow(val game_logic: GameLogic) extends JFrame("Emiles's Tower Defense")
 {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-    val game_logic = new GameLogic(/*new GameMap(Array(
-        Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
-        Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
-        Array(TowerTile(), TowerTile(), TowerTile(), MonsterTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
-        Array(TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
-        Array(TowerTile(), TowerTile(), TowerTile(), MonsterTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
-        Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
-        Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
-        Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), MonsterTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile()),
-        Array(TowerTile(), TowerTile(), TowerTile(), TowerTile(), BaseTile(), TowerTile(), TowerTile(), TowerTile(), TowerTile())))*/ GameInstance.map
-        , 10
-        , 10
-        , GameLogic.Levels.levels)
+
     val canvas = new GameBoardCanvas(game_logic)
 
     import java.awt.BorderLayout

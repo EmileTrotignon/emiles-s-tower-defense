@@ -1,7 +1,7 @@
 package GUI
 
-import java.awt.event.MouseEvent
 import java.awt._
+import java.awt.event.MouseEvent
 
 import GameLogic.Towers.Tower
 import GameLogic.{Double2, Int2, SizeInfo, SizeInfoPixels}
@@ -34,7 +34,7 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
         {
             case None => ()
             case Some(tower) =>
-                val center = size_info.logic_to_pixels(tower.position)
+                val center = size_info.logic_to_pixels(tower._position)
                 val size = size_info.logic_to_pixels(Double2(tower.reach, tower.reach) * 2)
                 val corner = center - (size / 2)
                 g.setColor(Color.green)
@@ -44,7 +44,7 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 
     override def paintComponent(g: Graphics)
     {
-        val size_info = new SizeInfoPixels(game_logic.board.map, g.getClipBounds())
+        val size_info = new SizeInfoPixels(game_logic.board.map.size, g.getClipBounds())
 
         val resolution = Int2(g.getClipBounds.width, g.getClipBounds.height)
 
@@ -80,7 +80,7 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
 
         override def mouseClicked(e: MouseEvent): Unit =
         {
-            val size_info = new SizeInfoPixels(game_logic.board.map, GameBoardCanvas.this.getBounds())
+            val size_info = new SizeInfoPixels(game_logic.board.map.size, GameBoardCanvas.this.getBounds())
             status match
             {
                 case GameBoardCanvas.Idle() => ()

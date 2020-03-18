@@ -92,6 +92,21 @@ case class Double2(x: Double, y: Double)
     {
         x_ <= x && y_ <= y && x <= (x_ + w) && y <= (y_ + h)
     }
+
+    def angle: Double =
+    {
+        math.atan2(y, x)
+    }
+
+    def rotated(angle: Double): Double2 =
+    {
+        Double2.unit_with_angle(angle) * dist_to_origin()
+    }
+
+    def rotated(direction: Double2): Double2 =
+    {
+        rotated(direction.angle)
+    }
 }
 
 object Int2
@@ -151,4 +166,8 @@ object Double2
         normalized(random() - Double2(0.5, 0.5))
     }
 
+    def unit_with_angle(angle: Double): Double2 =
+    {
+        Double2(math.cos(angle), math.sin(angle))
+    }
 }

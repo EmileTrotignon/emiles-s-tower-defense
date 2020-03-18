@@ -1,5 +1,7 @@
 package GameLogic
 
+import java.awt.Graphics
+
 case class SizeInfo(map_size: Int2)
 {
 
@@ -26,8 +28,13 @@ case class SizeInfo(map_size: Int2)
     }
 }
 
-class SizeInfoPixels(map: GameMap, val graphics_bounds: java.awt.Rectangle) extends SizeInfo(map)
+class SizeInfoPixels(map_size: Int2, val graphics_bounds: java.awt.Rectangle) extends SizeInfo(map_size)
 {
+
+    def this(map: GameMap, graphics: Graphics) =
+    {
+        this(map.size, graphics.getClipBounds)
+    }
 
     def square_size: Int2 =
     {

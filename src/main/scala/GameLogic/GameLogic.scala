@@ -3,11 +3,13 @@ package GameLogic
 import GUI.FTimer
 import GameLogic.Towers.Tower
 
-class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, var next_levels: List[Wave])
+class GameLogic(level: Level)
 {
+    val map: GameMap = level.map
+
     val board: BoardLogic = new BoardLogic(map)
 
-    val player: PlayerLogic = new PlayerLogic(starting_money, starting_lives)
+    val player: PlayerLogic = new PlayerLogic(level.starting_money, level.starting_lives)
 
     board.monster_in_base_signal.add_callback(player.monster_in_base)
     board.monster_died_signal.add_callback(player.killed_monster)
@@ -32,17 +34,15 @@ class GameLogic(map: GameMap, starting_money: Double, starting_lives: Double, va
     def start_next_level(): Unit =
     {
         is_finished =
-          next_levels match
+          level.get_next_wave match
           {
-              case level :: next =>
-                  next_levels = next
+              case Some(level) =>
                   current_level = level
                   current_level.start(this)
                   false
-              case Nil => true
+              case None => true
           }
     }
-
 
     def build_tower(pos_square: Int2, cost: Double, constructor: (Int2, SizeInfo) => Tower): Unit =
     {

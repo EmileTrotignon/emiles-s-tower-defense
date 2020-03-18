@@ -5,7 +5,7 @@ import java.awt.Color
 import GameLogic._
 import Graphics.{Drawing, DrawingElement, Square}
 
-case class SquareTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info: SizeInfo)
+class SquareTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info: SizeInfo)
 {
 
     protected val damage: Double = 0.5
@@ -16,12 +16,12 @@ case class SquareTower(square_ : Int2, size_info: SizeInfo) extends Tower(square
 
     private var tick: Int = 0
 
-    protected class TBullet(override var position: Double2, val direction: Double2) extends Bullet
+    protected class TBullet(override var _position: Double2, var __direction: Double2) extends Bullet
     {
-        val speed: Double = bullet_speed
+        _direction = __direction
+        override val speed: Double = bullet_speed
         override protected val damage: Double = SquareTower.this.damage
-        override val direction_and_speed: Double2 = Double2.normalized(direction) * speed
-        override protected val size: Double = 0.1
+        override protected val _size: Double = 0.1
     }
 
 

@@ -1,6 +1,7 @@
 package GameLogic
 
 import GUI.FSignal
+import GameLogic.Monsters.Monster
 
 class PlayerLogic(private var _money: Double, private var _lives: Double)
 {

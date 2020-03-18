@@ -1,12 +1,15 @@
 package GameLogic
 
-class SubWave(monster_ : Array[Double2 => Monster])
-{
-    val monsters: Array[Double2 => Monster] = monster_
+import GameLogic.Monsters.Monster
 
-    def spawn(game_logic: GameLogic): Unit =
+class SubWave(val monsters: Map[Double2 => Monster, Int])
+{
+    def spawn(game_logic: GameLogic, spawn_tile: Int2): Unit =
     {
-        monsters.foreach(monster => game_logic.board.spawn_monster(monster, Levels.spawn_tile))
+        monsters.foreach(e =>
+        {
+            for (i <- 0 until e._2) game_logic.board.spawn_monster(e._1, spawn_tile)
+        })
     }
 
 }
