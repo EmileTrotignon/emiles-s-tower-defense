@@ -4,7 +4,7 @@ import java.awt.Graphics2D
 
 import GameLogic._
 
-case class MonsterVals(position: Double2, max_hp: Double, hp: Double, damage: Double, speed: Double, direction: Double2, loot: Double, size: Double)
+case class MonsterVals(position: Double2, max_hp: Double, hp: Double, damage: Double, speed: Double, direction: Double2, loot: Double, size: Double, take_damage: Double => Unit, affect_hp: Double => Unit)
 
 
 abstract class Monster(override protected var _position: Double2) extends BoardObject
@@ -32,6 +32,8 @@ abstract class Monster(override protected var _position: Double2) extends BoardO
     def hp: Double = modifiers.values.hp
 
     def max_hp: Double = modifiers.values.max_hp
+    
+    def take_damage: Double => Unit = modifiers.values.take_damage
 
     override def direction: Double2 = modifiers.values.direction
 
@@ -44,12 +46,12 @@ abstract class Monster(override protected var _position: Double2) extends BoardO
             case Layers.monster =>
                 super.paint(size_info, layer, g)
             case Layers.life_bars =>
-                Graphics.draw_life_bar(_position, _size, size_info, _hp, _max_hp, g)
+                Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
             case _ => ()
         }
     }
 
-    def take_damage(damage: Double): Unit =
+    def _take_damage(damage: Double): Unit =
     {
         _hp -= damage
     }
@@ -61,7 +63,7 @@ abstract class Monster(override protected var _position: Double2) extends BoardO
 
     def get_raw_vals: MonsterVals =
     {
-        MonsterVals(_position, _max_hp, _hp, _damage, _speed, _direction, _loot, _size)
+        MonsterVals(_position, _max_hp, _hp, _damage, _speed, _direction, _loot, _size, _take_damage, h => _hp = h)
     }
 
     override def tick(b: BoardLogic): Unit =

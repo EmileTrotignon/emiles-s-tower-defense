@@ -7,7 +7,7 @@ import javax.swing._
 
 class Lobby(name: String) extends JFrame(name)
 {
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+    //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
 
     val start_game_signal: FSignal[GameLogic] = new FSignal[GameLogic]
 

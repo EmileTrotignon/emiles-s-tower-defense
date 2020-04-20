@@ -13,7 +13,6 @@ abstract class ModifierTower(square_ : Int2, size_info: SizeInfo) extends Tower(
 
     override def tick(b: BoardLogic): Unit =
     {
-
         b.monsters.filter(is_applicable).foreach(monster => modifiers.foreach(modifier => monster.add_modifier(modifier())))
 
         tick += 1

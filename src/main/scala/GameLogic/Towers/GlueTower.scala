@@ -19,7 +19,7 @@ class GlueTower(square_ : Int2, size_info: SizeInfo) extends ModifierTower(squar
                 Some(MonsterVals(
                     monster_vals.position, monster_vals.max_hp, monster_vals.hp,
                     monster_vals.damage, monster_vals.speed * slowdown, monster_vals.direction,
-                    monster_vals.loot, monster_vals.size))
+                    monster_vals.loot, monster_vals.size, monster_vals.take_damage, monster_vals.affect_hp))
         }
     }
 

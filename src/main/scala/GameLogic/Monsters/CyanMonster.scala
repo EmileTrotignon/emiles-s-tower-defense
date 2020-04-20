@@ -9,7 +9,7 @@ class CyanMonster(position_ : Double2) extends Monster(position_)
 {
     override val _max_hp: Double = 10
     override var _hp: Double = _max_hp
-    override val _speed: Double = 0.01
+    override val _speed: Double = 0.010
     override val _damage: Double = 2
     override val _loot: Double = 1
     override val _size: Double = 0.5

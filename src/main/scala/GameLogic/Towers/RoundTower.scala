@@ -8,7 +8,7 @@ import scala.collection.mutable
 class RoundTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
 {
 
-    override protected val damage: Double = 1.5
+    override protected val damage: Double = 0.5
     override protected val period: Int = 60
     override protected val _reach: Double = 5
 
@@ -18,7 +18,7 @@ class RoundTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, siz
     protected class TBullet(var __direction: Double2, override protected val monsters: mutable.Set[Monster], override var _position: Double2) extends ZoneDamageBullet
     {
         _direction = __direction
-        override val zone_size: Double = 3
+        override val zone_size: Double = 2
         override protected val damage: Double = 0
         override protected val zone_damage: Double = RoundTower.this.damage
         override val speed: Double = bullet_speed

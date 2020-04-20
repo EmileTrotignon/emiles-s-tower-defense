@@ -15,6 +15,11 @@ object Main //extends SimpleSwingApplication
 
     def main(args: Array[String]): Unit =
     {
+        open_lobby
+    }
+    
+    def open_lobby: Unit =
+    {
         lobby_window.setVisible(true)
     }
 
@@ -22,7 +27,7 @@ object Main //extends SimpleSwingApplication
     {
         System.setProperty("sun.java2d.opengl", "true")
         lobby_window.setVisible(false)
-        game_window = Some(new GameWindow(game_logic))
+        game_window = Some(new GameWindow(game_logic, _ => open_lobby))
         game_window match
         {
             case None => throw new RuntimeException()

@@ -1,10 +1,13 @@
 package GameLogic
 
 import GUI.FTimer
+import GUI.FSignal
 import GameLogic.Towers.Tower
 
 class GameLogic(level: Level)
 {
+    level.start
+
     val map: GameMap = level.map
 
     val board: BoardLogic = new BoardLogic(map)
@@ -18,29 +21,32 @@ class GameLogic(level: Level)
     val timer: GUI.FTimer = new FTimer(tick_interval, _ =>
     {
         board.tick_board()
-        if (current_level != null)
+        if (current_wave != null)
         {
-            current_level.tick_level(this)
-            if (board.is_deserted && current_level.is_finished)
-                current_level.end()
+            current_wave.tick_wave(this)
+            if (board.is_deserted && current_wave.is_finished) //A
+                current_wave.end() //B
         }
     })
     timer.start()
 
-    var current_level: Wave = _
+    var current_wave: Wave = _
 
-    var is_finished: Boolean = false
+    val you_win_signal = new FSignal[Unit]
 
-    def start_next_level(): Unit =
+    def start_next_wave(): Unit =
     {
-        is_finished =
-          level.get_next_wave match
-          {
-              case Some(level) =>
-                  current_level = level
-                  current_level.start(this)
-                  false
-              case None => true
+        level.get_next_wave match
+        {
+            case Some(wave) =>
+                //on fait ca :
+                wave.start
+                current_wave = wave
+                /* plutot que ca :
+                current_wave = wave //C
+                current_wave.start //D
+                afin d'eviter l'ordre d'execution C A D B qui poserait probleme*/
+            case None => you_win_signal.emit()
           }
     }
 
