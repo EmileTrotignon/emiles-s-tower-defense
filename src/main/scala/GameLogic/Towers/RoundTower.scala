@@ -1,16 +1,22 @@
 package GameLogic.Towers
 
+import java.awt.{Color, Graphics2D}
+import Graphics.{Drawing, DrawingElement}
+
 import GameLogic._
-import _root_.GameLogic.Monsters.Monster
+import GameLogic.Monsters.{Monster, MonsterModifier, MonsterVals}
+import GameLogic.{Double2, Int2, SizeInfo}
 
 import scala.collection.mutable
 
 class RoundTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
 {
-
     override protected val damage: Double = 0.5
     override protected val period: Int = 60
     override protected val _reach: Double = 5
+    val drawing: Drawing = new Graphics.Drawing(Array(
+        DrawingElement(filled_up = true, Color.green, Graphics.Circle.unit),
+        DrawingElement(filled_up = false, Color.black, Graphics.Circle.unit)))
 
     private var tick: Int = 0
     private val bullet_speed = 0.025

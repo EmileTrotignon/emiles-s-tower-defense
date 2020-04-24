@@ -5,9 +5,9 @@ import java.awt.{Color, Graphics2D}
 import GameLogic.{Double2, SizeInfoPixels}
 
 
-case class DrawingElement(filled_up: Boolean, color: Color, shape: Shape)
+case class DrawingElement(filled_up: Boolean, color: Color, shape: Shape, _angle: Double = 0)
 {
-    def paint(size_info: SizeInfoPixels, g: Graphics2D, position: Double2, scale: Double, angle: Double = 0): Unit =
+    def paint(size_info: SizeInfoPixels, g: Graphics2D, position: Double2, scale: Double, angle: Double = 0 + _angle): Unit =
     {
         if (angle == 0)
         {

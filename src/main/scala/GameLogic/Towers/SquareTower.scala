@@ -1,13 +1,14 @@
 package GameLogic.Towers
 
-import java.awt.Color
+import java.awt.{Color, Graphics2D}
+import Graphics.{Drawing, DrawingElement, Square}
 
 import GameLogic._
-import Graphics.{Drawing, DrawingElement, Square}
+import GameLogic.Monsters.{Monster, MonsterModifier, MonsterVals}
+import GameLogic.{Double2, Int2, SizeInfo}
 
 class SquareTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info: SizeInfo)
 {
-
     protected val damage: Double = 0.5
     protected val period: Int = 20
     protected val _reach: Double = 2

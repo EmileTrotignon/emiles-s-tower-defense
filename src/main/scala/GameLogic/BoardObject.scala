@@ -4,7 +4,7 @@ import java.awt.Graphics2D
 
 abstract class BoardObject
 {
-    protected var _position: Double2 //position sur l'image (pas sur la grille)
+    protected var _position: Double2
 
     protected val drawing: Graphics.Drawing
 
@@ -21,10 +21,10 @@ abstract class BoardObject
     def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
         if (direction == Double2(1, 0))
-            drawing.paint(size_info, g, _position, size)
+            drawing.paint(size_info, g, position, size)
         else
         {
-            drawing.paint(size_info, g, _position, size, direction.angle)
+            drawing.paint(size_info, g, position, size, direction.angle)
         }
     }
 

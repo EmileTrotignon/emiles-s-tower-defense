@@ -24,8 +24,17 @@ class GameLogic(level: Level)
         if (current_wave != null)
         {
             current_wave.tick_wave(this)
-            if (board.is_deserted && current_wave.is_finished) //A
+            if(current_wave.is_finished)
+            {
                 current_wave.end() //B
+                if (level.is_finished)
+                {
+                    if (board.is_deserted) //A
+                        you_win_signal.emit()
+                }
+                else
+                    last_subwave_but_not_last_wave_signal.emit()
+            }
         }
     })
     timer.start()
@@ -33,12 +42,16 @@ class GameLogic(level: Level)
     var current_wave: Wave = _
 
     val you_win_signal = new FSignal[Unit]
+    
+    val new_wave_signal = new FSignal[Unit]
+    val last_subwave_but_not_last_wave_signal = new FSignal[Unit]
 
     def start_next_wave(): Unit =
     {
         level.get_next_wave match
         {
             case Some(wave) =>
+                new_wave_signal.emit()
                 //on fait ca :
                 wave.start
                 current_wave = wave
@@ -46,7 +59,7 @@ class GameLogic(level: Level)
                 current_wave = wave //C
                 current_wave.start //D
                 afin d'eviter l'ordre d'execution C A D B qui poserait probleme*/
-            case None => you_win_signal.emit()
+            case None => you_win_signal.emit() // n'est pas suppose se produire
           }
     }
 
@@ -57,5 +70,4 @@ class GameLogic(level: Level)
         val tower = constructor(pos_square, new SizeInfo(map))
         board.towers.addOne(tower)
     }
-
 }

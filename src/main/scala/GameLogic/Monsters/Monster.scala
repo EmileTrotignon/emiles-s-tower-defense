@@ -4,13 +4,13 @@ import java.awt.Graphics2D
 
 import GameLogic._
 
-case class MonsterVals(position: Double2, max_hp: Double, hp: Double, damage: Double, speed: Double, direction: Double2, loot: Double, size: Double, take_damage: Double => Unit, affect_hp: Double => Unit)
+case class MonsterVals(position: Double2, max_hp: Double, hp: Double, damage: Double, speed: Double, direction: Double2, loot: Double, size: Double, take_damage: Double => Unit, monster: Monster)
 
 
 abstract class Monster(override protected var _position: Double2) extends BoardObject
 {
     protected val _max_hp: Double
-    protected var _hp: Double
+    var _hp: Double
     var dead: Boolean = false
     protected val _damage: Double
     protected val _speed: Double
@@ -21,15 +21,14 @@ abstract class Monster(override protected var _position: Double2) extends BoardO
     {
         modifiers.modifiers.addOne(modifier)
     }
-
-
+    
     def speed: Double = modifiers.values.speed
 
     def damage: Double = modifiers.values.damage
 
     def loot: Double = modifiers.values.loot
 
-    def hp: Double = modifiers.values.hp
+    def hp: Double = scala.math.min(modifiers.values.hp, modifiers.values.max_hp) 
 
     def max_hp: Double = modifiers.values.max_hp
     
@@ -37,7 +36,9 @@ abstract class Monster(override protected var _position: Double2) extends BoardO
 
     override def direction: Double2 = modifiers.values.direction
 
-    override def position: Double2 = super.position
+    override def size: Double = modifiers.values.size
+    
+    override def position: Double2 = modifiers.values.position
 
     override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
@@ -46,7 +47,7 @@ abstract class Monster(override protected var _position: Double2) extends BoardO
             case Layers.monster =>
                 super.paint(size_info, layer, g)
             case Layers.life_bars =>
-                Graphics.draw_life_bar(position, size, size_info, hp, max_hp, g)
+                Graphics.draw_life_bar(position, _size, size_info, hp, max_hp, g)
             case _ => ()
         }
     }
@@ -63,12 +64,11 @@ abstract class Monster(override protected var _position: Double2) extends BoardO
 
     def get_raw_vals: MonsterVals =
     {
-        MonsterVals(_position, _max_hp, _hp, _damage, _speed, _direction, _loot, _size, _take_damage, h => _hp = h)
+        MonsterVals(_position, _max_hp, _hp, _damage, _speed, _direction, _loot, _size, _take_damage, this)
     }
 
     override def tick(b: BoardLogic): Unit =
     {
-
         modifiers.update(this)
 
         if (hp <= 0)

@@ -5,12 +5,11 @@ import java.awt.Color
 import GameLogic.Double2
 import Graphics.{Drawing, DrawingElement}
 
-class LittleMonster(position_ : Double2) extends ModifierMonster(position_)
+class LittleMonster(position_ : Double2) extends InfluencingMonster(position_, 3, Color.yellow)
 {
-    protected val reach = 3.5
-    protected val ratio = 1/2
+    protected val ratio = 0.6
  
-    override val _max_hp: Double = 100
+    override val _max_hp: Double = 7
     override var _hp: Double = _max_hp
     override val _speed: Double = 0.018
     override val _damage: Double = 2
@@ -18,25 +17,18 @@ class LittleMonster(position_ : Double2) extends ModifierMonster(position_)
     override val _size: Double = 0.5
     override val drawing: Drawing = new Graphics.Drawing(Array(
         DrawingElement(filled_up = true, Color.black, Graphics.Circle.unit),
-        DrawingElement(filled_up = false, Color.white, Graphics.Circle.unit),
-        DrawingElement(filled_up = false, Color.yellow, Graphics.Circle(Double2(0, 0), reach/ratio)),
-        DrawingElement(filled_up = true, Color.yellow, Graphics.Rectangle(Double2(0, 0), Double2(0.2, 0.35)))))
+        DrawingElement(filled_up = false, Color.white, Graphics.Circle.unit)))
 
-    override def is_applicable(m: Monster): Boolean =
-    {
-        Double2.dist(m.position, position) <= reach
-    }
- 
     case class LModifier() extends MonsterModifier
     {
         override def apply(monster_vals: MonsterVals): Option[MonsterVals] =
         {
-            if (n_tick >= 2) None
-            else
+            if (is_applicable(monster_vals.monster))
                 Some(MonsterVals(
                     monster_vals.position, monster_vals.max_hp, monster_vals.hp,
                     monster_vals.damage, _speed, monster_vals.direction,
-                    monster_vals.loot, size*ratio, damage => monster_vals.take_damage(damage/ratio), monster_vals.affect_hp))
+                    monster_vals.loot, _size*ratio, damage => monster_vals.take_damage(damage/ratio), monster_vals.monster))
+            else None                      
         }
     }
 

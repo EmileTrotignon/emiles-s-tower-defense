@@ -4,6 +4,7 @@ abstract class Level(val name: String, val map: GameMap, val starting_money: Dou
 {
     def start: Unit
     def get_next_wave: Option[Wave]
+    def is_finished: Boolean
 }
 
 object Level
@@ -12,6 +13,8 @@ object Level
       extends Level(name, map, starting_money, starting_lives)
     {
         var next_waves: List[GameLogic.Wave] = Nil
+        
+        override def is_finished: Boolean = next_waves == Nil
         
         override def start: Unit =
         {

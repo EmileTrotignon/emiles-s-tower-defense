@@ -1,16 +1,23 @@
 package GameLogic.Towers
 
 import java.awt.{Color, Graphics2D}
+import Graphics.{Drawing, DrawingElement}
 
 import GameLogic._
-import _root_.GameLogic.Monsters.Monster
+import GameLogic.Monsters.Monster
+import GameLogic.{Double2, Int2, SizeInfo}
 
 class LaserTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
 {
-
     val damage: Double = 0.05
     val period: Int = 30
     val _reach: Double = 4
+    val drawing: Drawing = new Graphics.Drawing(Array(
+        DrawingElement(filled_up = true, Color.green, Graphics.Circle.unit),
+        DrawingElement(filled_up = false, Color.black, Graphics.Circle.unit),
+        DrawingElement(filled_up = false, Color.black, Graphics.Circle(Double2(0, 0), 0.36)),
+        DrawingElement(filled_up = false, Color.black, Graphics.Circle(Double2(0, 0), 0.12)),
+        DrawingElement(filled_up = false, Color.black, Graphics.Circle(Double2(0, 0), 0.04))))
 
     var shooting_monster: Option[Monster] = None
 

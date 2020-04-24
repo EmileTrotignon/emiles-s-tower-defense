@@ -28,18 +28,23 @@ class GameWindow(val game_logic: GameLogic, val end_game: Unit => Unit) extends 
     game_logic.player.updated_signal.emit(game_logic.player)
     game_logic.player.you_lost_signal.add_callback(end_level("You lost"))
     game_logic.you_win_signal.add_callback(end_level("You win !"))
+    game_logic.new_wave_signal.add_callback(set_starting_next_wave(false))
+    game_logic.last_subwave_but_not_last_wave_signal.add_callback(set_starting_next_wave(true))
     canvas.tower_built_signal.add_callback(_ =>
     {
         panel_build_towers.cancel_button.setVisible(false)
         panel_build_towers.enable_every_tower()
     })
-
+    
+    def set_starting_next_wave(b: Boolean)(u: Unit): Unit = panel_player_actions.next_wave_button.setVisible(b) 
+    
     def end_level(message: String)(u: Unit): Unit =
     {
         JOptionPane.showMessageDialog(this, message)
         this.setVisible(false)
         end_game()
+        game_logic.timer.stop()
+        canvas.timer.stop()
         //System.exit(0)
     }
-
 }

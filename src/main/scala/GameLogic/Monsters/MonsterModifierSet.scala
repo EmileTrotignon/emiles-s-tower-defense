@@ -30,6 +30,6 @@ class MonsterModifierSet(first_values: MonsterVals)
     def tick(m: Monster): Unit =
     {
         update(m)
-        modifiers.foreach(m => m.tick())
+        //modifiers.foreach(m => m.tick()) // inutile finalement
     }
 }

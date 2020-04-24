@@ -1,9 +1,9 @@
 package GameLogic.Towers
 
-import java.awt.{Color, Graphics2D}
+import java.awt.Graphics2D
 
 import GameLogic._
-import Graphics.{Drawing, DrawingElement}
+import Graphics.Drawing
 
 abstract class Tower(val square: Int2 = null, size_info: SizeInfo) extends BoardObject
 {
@@ -12,9 +12,7 @@ abstract class Tower(val square: Int2 = null, size_info: SizeInfo) extends Board
     protected val damage: Double
     protected val period: Int
     protected val _reach: Double
-    override val drawing: Drawing = new Graphics.Drawing(Array(
-        DrawingElement(filled_up = true, Color.green, Graphics.Circle.unit),
-        DrawingElement(filled_up = false, Color.black, Graphics.Circle.unit)))
+    val drawing: Drawing
 
     override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
     {
