@@ -70,4 +70,11 @@ class GameLogic(level: Level)
         val tower = constructor(pos_square, new SizeInfo(map))
         board.towers.addOne(tower)
     }
+    
+    def convert_tile(pos_square: Int2, cost: Double, player_side: Boolean): Unit =
+    {
+        assert(cost <= player.money)
+        player.money -= cost
+        board.map.set_tile(pos_square, if (player_side) TowerTile() else SpecialMonsterTile())
+    }
 }

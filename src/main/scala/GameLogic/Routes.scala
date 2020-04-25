@@ -18,7 +18,7 @@ class Routes(map: GameMap)
 
     def square_neighbours: Array[Int2] = Array(Int2(1, 0), Int2(-1, 0), Int2(0, 1), Int2(0, -1))
 
-    def update_routes(): Unit =
+    def update_routes(): Boolean =
     {
 
         val next_squares: mutable.PriorityQueue[(Int2, Int)] = mutable.PriorityQueue[(Int2, Int)]()(Ordering.by((s: (Int2, Int)) => -s._2))
@@ -32,16 +32,16 @@ class Routes(map: GameMap)
                     routes -= sq
                     next_squares += (sq -> 0)
                     routes += (sq -> (sq, Some(0)))
-                case MonsterTile() =>
-                    routes -= sq
-                    routes += (sq -> (sq, None))
-                case _ =>
+                case TowerTile() =>
                     val destination = map.iterator.filter(
                         sq => map.get_tile(sq) == MonsterTile()
                     ).minBy(
                         sq2 => Double2.squared_dist(size_info.square_center(sq), size_info.square_center(sq2))
                     )
                     routes += (sq -> (destination, None))
+                case _ =>
+                    routes -= sq
+                    routes += (sq -> (sq, None))
             }
         }
         )
@@ -63,6 +63,7 @@ class Routes(map: GameMap)
                         {
                             case BaseTile() => true
                             case MonsterTile() => true
+                            case SpecialMonsterTile() => true
                             case _ => false
                         }
                         )
@@ -81,13 +82,28 @@ class Routes(map: GameMap)
             }
             )
         }
+        
+        var valid = true
+        
+        map.iterator.foreach(sq =>
+        {
+            val t = map.get_tile(sq)
+            t match
+            {
+                case BaseTile() => ()
+                case TowerTile() => ()
+                case _ => (routes(sq)._2 match
+                {
+                    case None => valid = false
+                    case _ => ()
+                })
+            }
+        })
+        
+        valid
     }
 
     update_routes()
 
-    def next_target(position: Double2): Int2 =
-    {
-        val info = new SizeInfo(map)
-        routes(info.logic_to_square(position))._1
-    }
+    def next_target(position: Double2): Int2 = routes(size_info.logic_to_square(position))._1
 }

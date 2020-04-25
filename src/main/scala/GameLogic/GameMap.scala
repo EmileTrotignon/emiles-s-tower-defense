@@ -5,9 +5,8 @@ import java.awt.{Color, Graphics2D, Rectangle}
 
 import scala.collection.mutable.ArrayBuffer
 
-class GameMap(private val map: Array[Array[MapTile]])
+class GameMap(val map: Array[Array[MapTile]])
 {
-
     def size: Int2 =
     {
         Int2(map(0).length, map.length)
@@ -18,15 +17,14 @@ class GameMap(private val map: Array[Array[MapTile]])
         size.x
     }
 
-
     def height: Int =
     {
         size.y
     }
 
-    def is_buildable(s: Int2): Boolean =
+    def is_buildable(square: Int2): Boolean =
     {
-        get_tile(s) match
+        get_tile(square) match
         {
             case TowerTile() => true
             case _ => false
@@ -38,9 +36,37 @@ class GameMap(private val map: Array[Array[MapTile]])
         map(j)(i)
     }
 
-    def get_tile(s: Int2): MapTile =
+    def get_tile(square: Int2): MapTile =
     {
-        get_tile(s.x, s.y)
+        get_tile(square.x, square.y)
+    }
+
+    def set_tile(square: Int2, tile: MapTile): Boolean =
+    {
+        map(square.y)(square.x) = tile
+        routes.update_routes()
+    }
+    
+    def is_convertible(square: Int2, player_side: Boolean): Boolean =
+    {
+        if (player_side)
+        {
+            get_tile(square) match
+            {
+                case MonsterTile() =>
+                    val test_map = new GameMap(map.map(row => row.map(tile => tile)))
+                    test_map.set_tile(square, TowerTile())
+                case _ => false
+            }
+        }
+        else
+        {
+            get_tile(square) match
+            {
+                case TowerTile() => true
+                case _ => false
+            }
+        }
     }
 
     def paint_map(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
@@ -69,7 +95,10 @@ class GameMap(private val map: Array[Array[MapTile]])
                         case BaseTile() =>
                             g.setColor(Color.red)
                             g.fillRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
-                        case _ => ()
+                        case SpecialMonsterTile() =>
+                            g.setColor(Color.white)
+                            g.fillRect(pos_pixels.x, pos_pixels.y, size_info.square_size.x, size_info.square_size.y)
+                        case _  => ()
                     }
                 }
             case _ => ()
@@ -77,11 +106,14 @@ class GameMap(private val map: Array[Array[MapTile]])
     }
 
     def iterator: Seq[Int2] =
+    {
         for
             {i <- 0 until size.x
              j <- 0 until size.y
              } yield Int2(i, j)
+    }
 
+    val routes = new Routes(this)
 }
 
 object GameMap
@@ -95,6 +127,8 @@ object GameMap
                 case 'T' => TowerTile()
                 case 'B' => BaseTile()
                 case 'M' => MonsterTile()
+                case 'S' => SpecialMonsterTile()
+                case _ => SpecialMonsterTile() //c'est important de mettre ce cas pour ne pas avoir une erreur incomprehensible a l'execution quand on s'est trompe dans l'ecriture du fichier mapN
             }
         }
 

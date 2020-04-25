@@ -2,10 +2,10 @@ package GUI
 
 import java.awt.event.ActionEvent
 
-import GameLogic.Towers.TowerType
+import GameLogic.{TileAction, PlayerAction}
 
-class BuildTowerButton(tower_type: TowerType, action: ActionEvent => Unit)
-  extends FButton(s"${tower_type.name} : ${tower_type.cost}", action)
+class TileActionButton(player_action: PlayerAction, a: ActionEvent => Unit)
+  extends FButton(s"${player_action.name} : ${player_action.cost}", a)
 {
     private var _buildable_interface = true
 
@@ -36,7 +36,7 @@ class BuildTowerButton(tower_type: TowerType, action: ActionEvent => Unit)
 
     def update_cost_enabling(money: Double): Unit =
     {
-        val b = money >= tower_type.cost
+        val b = money >= player_action.cost
         buildable_money = b
     }
 }

@@ -3,8 +3,8 @@ package GUI
 import java.awt._
 import java.awt.event.MouseEvent
 
-import GameLogic.Towers.Tower
-import GameLogic.{Double2, Int2, SizeInfo, SizeInfoPixels}
+import GameLogic.TileAction
+import GameLogic.{TileAction, TowerConstruction, TileConversion, Double2, Int2, SizeInfo, SizeInfoPixels}
 import javax.swing._
 import javax.swing.event.MouseInputAdapter
 
@@ -26,7 +26,7 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
     })
     timer.start()
 
-    val tower_built_signal: FSignal[Unit] = new FSignal[Unit]()
+    val tile_action_performed_signal: FSignal[Unit] = new FSignal[Unit]()
 
     def paint_hovered_square(size_info: SizeInfoPixels, square: Int2, g: Graphics2D): Unit =
     {
@@ -84,16 +84,27 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
             status match
             {
                 case GameBoardCanvas.Idle() => ()
-                case GameBoardCanvas.BuildingTower(cost, constructor) =>
+                case GameBoardCanvas.PerformingTileAction(cost, tile_action) =>
                     val pos = new Int2(e.getX, e.getY)
                     val pos_square = size_info.pixels_to_square(pos)
-                    if (game_logic.board.map.is_buildable(pos_square) && game_logic.board.tower_at_square(pos_square).isEmpty)
+                    tile_action match
                     {
-                        game_logic.build_tower(pos_square, cost, constructor)
-                        status = GameBoardCanvas.Idle()
-                        tower_built_signal.emit()
+                        case TowerConstruction(constructor) => 
+                            if (game_logic.board.map.is_buildable(pos_square) && game_logic.board.tower_at_square(pos_square).isEmpty)
+                            {
+                                game_logic.build_tower(pos_square, cost, constructor)
+                                status = GameBoardCanvas.Idle()
+                                tile_action_performed_signal.emit()
+                            }
+                        case TileConversion(player_side) =>
+                            if (game_logic.board.map.is_convertible(pos_square, player_side))
+                            {
+                                game_logic.convert_tile(pos_square, cost, player_side)
+                                status = GameBoardCanvas.Idle()
+                                tile_action_performed_signal.emit()
+                            }
                     }
-
+                              
             }
         }
 
@@ -113,7 +124,7 @@ object GameBoardCanvas
 
     }
 
-    case class BuildingTower(cost: Double, constructor: (Int2, SizeInfo) => Tower) extends GameBoardCanvasStatus
+    case class PerformingTileAction(cost: Double, tile_action: TileAction) extends GameBoardCanvasStatus
     {
 
     }
@@ -122,6 +133,4 @@ object GameBoardCanvas
     {
 
     }
-
 }
-

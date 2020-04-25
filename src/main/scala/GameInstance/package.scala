@@ -3,46 +3,6 @@ import GameLogic._
 
 import scala.io.{BufferedSource, Source}
 
-/*
-object Levels
-{
-    val spawn_tile: Int2 = Int2(0, 9)
-
-
-
-    val a: List[Array[Double2 => Monster]] = List(Array(cyan_monster), Array(cyan_monster, cyan_monster))
-    val l = new Wave(a)
-    val levels: List[Wave] =
-        List(
-            new Wave(List(
-                Array(cyan_monster, cyan_monster, cyan_monster),
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster))),
-            new Wave(List(
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster),
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster),
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster))),
-            new Wave(List(
-                Array(cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, cyan_monster, blue_monster, cyan_monster, cyan_monster, cyan_monster),
-                Array(cyan_monster, blue_monster, blue_monster, blue_monster, cyan_monster, cyan_monster, cyan_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster))),
-            new Wave(List(
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster))),
-            new Wave(List(
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster),
-                Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster))),
-            new Wave(List(Array(blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster, blue_monster))))
-
-
-}
-
-*/
-
 package object GameInstance
 {
 
@@ -57,9 +17,9 @@ package object GameInstance
     assert(map_file.nonEmpty)
     val map: GameMap = GameMap.from_file(map_file)
 
-    val levels: Array[Level] =
+    val level_loaders: Array[Unit => Level] = //_ => new Level.from_list(...) permet de charger la GameMap a nouveau et donc ne pas subir l'effet des convert_tile effectues lors des precedentes parties sur ce level
         Array(
-            Level.from_list("Level 1", GameMap.from_file(Source.fromResource("map1")), 10, 10,
+            (_ => Level.from_list("Level 1", GameMap.from_file(Source.fromResource("map1")), 10, 10,
                 List(
                     new Wave(List(
                         Map(cyan_monster -> 2),
@@ -70,8 +30,8 @@ package object GameInstance
                         Map(cyan_monster -> 4, blue_monster -> 4),
                     ), Int2(0, 4))
                 )
-            ),
-            Level.from_list("Level 2", GameMap.from_file(Source.fromResource("map2")), 10, 10,
+            )),
+            (_ => Level.from_list("Level 2", GameMap.from_file(Source.fromResource("map2")), 10, 10,
                 List(
                     new Wave(List(
                         Map(little_monster -> 1, cyan_monster -> 3, blue_monster -> 2),
@@ -91,8 +51,8 @@ package object GameInstance
                         Map(cyan_monster -> 2, shield_monster -> 1, blue_monster -> 1)
                     ), Int2(0, 9))
                 )
-            ),
-            Level.from_list("Level 3", GameMap.from_file(Source.fromResource("map3")), 16, 13,
+            )),
+            (_ => Level.from_list("Level 3", GameMap.from_file(Source.fromResource("map3")), 16, 13,
                 List(
                     new Wave(List(
                         Map(little_monster -> 1, blue_monster -> 1, cyan_monster -> 4),
@@ -121,8 +81,8 @@ package object GameInstance
                         Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, cyan_monster -> 1),
                         Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, blue_monster -> 2),
                         Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, cyan_monster -> 1)
-                    ), Int2(2, 0))
+                    ), Int2(4, 0))
                 )
-            )
+            ))
         )
 }

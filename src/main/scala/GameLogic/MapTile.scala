@@ -15,6 +15,11 @@ case class MonsterTile() extends MapTile
 
 }
 
+case class SpecialMonsterTile() extends MapTile
+{
+
+}
+
 case class BaseTile() extends MapTile
 {
 

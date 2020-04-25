@@ -78,7 +78,7 @@ abstract class Monster(override protected var _position: Double2) extends BoardO
         }
 
 
-        val vector_to_target = Double2.normalized(b.size_info.square_center(b.routes.next_target(position)) - position)
+        val vector_to_target = Double2.normalized(b.size_info.square_center(b.map.routes.next_target(position)) - position)
         val anti_frotteur_component =
             if (b.monsters.size >= 2)
             {

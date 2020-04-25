@@ -27,22 +27,5 @@ abstract class Tower(val square: Int2 = null, size_info: SizeInfo) extends Board
 
     def reach: Double = _reach
 
-    def build(): Unit =
-    {}
-
-
-}
-
-case class TowerType(name: String, constructor: (Int2, SizeInfo) => Tower, cost: Double)
-{
-
-}
-
-object Tower
-{
-    var tower_constructors: Array[TowerType] = Array(
-        Towers.TowerType("Square tower", new SquareTower(_, _), 5),
-        Towers.TowerType("Round tower", new RoundTower(_, _), 10),
-        Towers.TowerType("Laser tower", new LaserTower(_, _), 10),
-        Towers.TowerType("Glue tower", new GlueTower(_, _), 10))
+    def build(): Unit = ()
 }
