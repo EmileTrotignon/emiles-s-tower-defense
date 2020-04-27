@@ -2,10 +2,9 @@ package GameLogic.Towers
 
 import java.awt.Color
 
-import GameLogic._
-import _root_.GameLogic.Monsters.Monster
-import _root_.GameLogic.{Double2, Int2, SizeInfo}
 import Graphics.{Drawing, DrawingElement}
+import _root_.GameLogic.Monsters.Monster
+import _root_.GameLogic.{Double2, Int2, SizeInfo, _}
 
 class HeatSeekingTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
 {
@@ -13,7 +12,8 @@ class HeatSeekingTower(square_ : Int2, size_info: SizeInfo) extends Tower(square
     override protected val period: Int = 50
     override protected val _reach: Double = 7
     val drawing: Drawing = new Graphics.Drawing(Array(
-        DrawingElement(filled_up = true, Color.green, Graphics.Circle.unit),
+        DrawingElement(filled_up = true, Color.darkGray, Graphics.Circle.unit),
+        DrawingElement(filled_up = false, Color.red, Graphics.Square(Double2(0, 0), 0.5)),
         DrawingElement(filled_up = false, Color.black, Graphics.Circle.unit)))
 
     private var tick: Int = 0
