@@ -30,9 +30,9 @@ abstract class Shape()
 
 object Shape
 {
-    def shape_to_logic(shape_coor: Double2, shape_position: Double2): Double2 =
+    def shape_to_logic(shape_coor: Double2, shape_position: Double2, scale: Double): Double2 =
     {
-        (shape_coor / 2) + shape_position
+        (shape_coor * scale) + shape_position
     }
 
     def from_words(words: Array[String]): Shape =
@@ -77,7 +77,7 @@ case class Oval(center: Double2, size: Double2) extends Shape
     override def draw(size_info: SizeInfoPixels, g: Graphics2D, color: Color, position: Double2, scale: Double = 1): Unit =
     {
         super.draw(size_info, g, color, position, scale)
-        val center_pixels = size_info.logic_to_pixels(Shape.shape_to_logic(center, position))
+        val center_pixels = size_info.logic_to_pixels(Shape.shape_to_logic(center, position, scale))
         val size_pixels = size_info.logic_to_pixels(size * scale)
         g.drawOval(center_pixels.x - size_pixels.x / 2, center_pixels.y - size_pixels.y / 2, size_pixels.x, size_pixels.y)
     }
@@ -85,7 +85,7 @@ case class Oval(center: Double2, size: Double2) extends Shape
     override def fill(size_info: SizeInfoPixels, g: Graphics2D, color: Color, position: Double2, scale: Double = 1): Unit =
     {
         super.fill(size_info, g, color, position, scale)
-        val center_pixels = size_info.logic_to_pixels(Shape.shape_to_logic(center, position))
+        val center_pixels = size_info.logic_to_pixels(Shape.shape_to_logic(center, position, scale))
         val size_pixels = size_info.logic_to_pixels(size * scale)
         g.fillOval(center_pixels.x - size_pixels.x / 2, center_pixels.y - size_pixels.y / 2, size_pixels.x, size_pixels.y)
     }
@@ -125,7 +125,7 @@ case class Rectangle(center: Double2, size: Double2) extends Shape
     override def draw(size_info: SizeInfoPixels, g: Graphics2D, color: Color, position: Double2, scale: Double = 1): Unit =
     {
         super.draw(size_info, g, color, position, scale)
-        val corner_pixels = size_info.logic_to_pixels(Shape.shape_to_logic(center - size / 2, position))
+        val corner_pixels = size_info.logic_to_pixels(Shape.shape_to_logic(center - size / 2, position, scale))
         val size_pixels = size_info.logic_to_pixels(size * scale)
         g.drawRect(corner_pixels.x, corner_pixels.y, size_pixels.x, size_pixels.y)
     }
@@ -133,7 +133,8 @@ case class Rectangle(center: Double2, size: Double2) extends Shape
     override def fill(size_info: SizeInfoPixels, g: Graphics2D, color: Color, position: Double2, scale: Double = 1): Unit =
     {
         super.fill(size_info, g, color, position, scale)
-        val corner_pixels = size_info.logic_to_pixels(Shape.shape_to_logic(center - size / 2, position))
+        val corner_logic = Shape.shape_to_logic(center - size / 2, position, scale)
+        val corner_pixels = size_info.logic_to_pixels(corner_logic)
         val size_pixels = size_info.logic_to_pixels(size * scale)
         g.fillRect(corner_pixels.x, corner_pixels.y, size_pixels.x, size_pixels.y)
     }
@@ -200,7 +201,7 @@ case class Line(origin: Double2, size: Double2) extends Shape
     override def draw(size_info: SizeInfoPixels, g: Graphics2D, color: Color, position: Double2, scale: Double): Unit =
     {
         super.draw(size_info, g, color, position, scale)
-        val pos_pixels = size_info.logic_to_pixels(Shape.shape_to_logic(origin, position))
+        val pos_pixels = size_info.logic_to_pixels(Shape.shape_to_logic(origin, position, scale))
         val size_pixels = size_info.logic_to_pixels(size * scale)
         g.drawLine(pos_pixels.x, pos_pixels.y, size_pixels.x, size_pixels.y)
     }

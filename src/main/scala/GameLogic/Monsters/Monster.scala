@@ -91,7 +91,7 @@ abstract class Monster(override protected var _position: Double2) extends BoardO
                 Double2(0, 0)
             }
         val random_component = Double2.random_normalised()
-        _direction = Double2.normalized(vector_to_target + anti_frotteur_component * 0.2 + random_component * 0.1)
+        _direction = Double2.normalized(vector_to_target + anti_frotteur_component * 0.2 /*+ random_component * 0.1*/)
         modifiers.update(this)
         _position += direction * speed
         modifiers.tick(this)

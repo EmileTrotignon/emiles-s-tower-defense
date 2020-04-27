@@ -1,4 +1,4 @@
-import GameLogic.Monsters.{BlueMonster, CyanMonster, ShieldMonster, HealerMonster, ProtectorMonster, LittleMonster, Monster}
+import GameLogic.Monsters._
 import GameLogic._
 
 import scala.io.{BufferedSource, Source}
@@ -19,7 +19,7 @@ package object GameInstance
 
     val level_loaders: Array[Unit => Level] = //_ => new Level.from_list(...) permet de charger la GameMap a nouveau et donc ne pas subir l'effet des convert_tile effectues lors des precedentes parties sur ce level
         Array(
-            (_ => Level.from_list("Level 1", GameMap.from_file(Source.fromResource("map1")), 10, 10,
+            (_ => Level.from_list("Level 1", GameMap.from_file(Source.fromResource("map1")), 15, 10,
                 List(
                     new Wave(List(
                         Map(cyan_monster -> 2),
@@ -31,13 +31,13 @@ package object GameInstance
                     ), Int2(0, 4))
                 )
             )),
-            (_ => Level.from_list("Level 2", GameMap.from_file(Source.fromResource("map2")), 10, 10,
+            (_ => Level.from_list("Level 2", GameMap.from_file(Source.fromResource("map2")), 15, 10,
                 List(
                     new Wave(List(
                         Map(little_monster -> 1, cyan_monster -> 3, blue_monster -> 2),
                         Map(cyan_monster -> 3, blue_monster -> 2),
                         Map(protector_monster -> 1, cyan_monster -> 4),
-                        Map(cyan_monster -> 2,blue_monster -> 1)
+                        Map(cyan_monster -> 2, blue_monster -> 1)
                     ), Int2(0, 9)),
                     new Wave(List(
                         Map(cyan_monster -> 3, healer_monster -> 1),

@@ -60,3 +60,46 @@ abstract class ZoneDamageBullet
         })
     }
 }
+
+abstract class HeatSeekingBullet
+  extends Bullet
+{
+    protected var target: Option[Monster]
+
+    override def tick(b: BoardLogic): Unit =
+    {
+        super.tick(b)
+        target match
+        {
+            case Some(monster) =>
+                if (!monster.dead)
+                    _direction = Double2.normalized(monster.position - position)
+                else target = None
+            case None => ()
+        }
+    }
+
+    override def paint(size_info: SizeInfoPixels, layer: Int, g: Graphics2D): Unit =
+    {
+        super.paint(size_info, layer, g)
+        layer match
+        {
+            case Layers.targetting =>
+                target match
+                {
+                    case Some(monster) =>
+                        g.setColor(Color.red)
+                        Graphics.draw_line(size_info, position, monster.position, g)
+                        val square_corner = size_info.logic_to_pixels(monster.position - Double2(monster.size / 2, monster.size / 2))
+                        val size_pixels = size_info.logic_to_pixels(Double2(monster.size, monster.size))
+                        g.drawRect(square_corner.x, square_corner.y, size_pixels.x, size_pixels.y)
+                    case None => ()
+                }
+            case _ => ()
+        }
+
+    }
+}
+
+
+

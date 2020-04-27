@@ -78,7 +78,7 @@ case class Double2(x: Double, y: Double)
         x * x + y * y
     }
 
-    def dist_to_origin(): Double =
+    def dist_to_origin: Double =
     {
         Math.sqrt(this.squared_dist_to_origin())
     }
@@ -100,12 +100,17 @@ case class Double2(x: Double, y: Double)
 
     def rotated(angle: Double): Double2 =
     {
-        Double2.unit_with_angle(angle) * dist_to_origin()
+        Double2.unit_with_angle(angle) * dist_to_origin
     }
 
     def rotated(direction: Double2): Double2 =
     {
         rotated(direction.angle)
+    }
+
+    def add_angle(_angle: Double): Double2 =
+    {
+        Double2.unit_with_angle(angle + _angle) * dist_to_origin
     }
 }
 
@@ -138,7 +143,7 @@ object Double2
 
     def dist(p1: Double2, p2: Double2): Double =
     {
-        (p1 - new Double2(p2.x, p2.y)).dist_to_origin()
+        (p1 - new Double2(p2.x, p2.y)).dist_to_origin
     }
 
     def squared_dist(p1: Double2, p2: Double2): Double =
@@ -148,7 +153,7 @@ object Double2
 
     def normalized(p: Double2): Double2 =
     {
-        p / p.dist_to_origin()
+        p / p.dist_to_origin
     }
 
     def random_gaussian(): Double2 =

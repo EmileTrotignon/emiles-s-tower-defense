@@ -24,8 +24,6 @@ abstract class Tower(val square: Int2 = null, size_info: SizeInfo) extends Board
         }
     }
 
-
     def reach: Double = _reach
 
-    def build(): Unit = ()
 }
