@@ -8,7 +8,7 @@ import _root_.GameLogic.{Double2, Int2, SizeInfo, _}
 
 class HeatSeekingTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
 {
-    override protected val damage: Double = 0.8
+    override protected val damage: Double = 1.2
     override protected val period: Int = 50
     override protected val _reach: Double = 7
     val drawing: Drawing = new Graphics.Drawing(Array(

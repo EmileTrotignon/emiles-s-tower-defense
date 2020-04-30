@@ -9,7 +9,7 @@ import Graphics.{Drawing, DrawingElement}
 
 class LaserTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info)
 {
-    val damage: Double = 0.03
+    val damage: Double = 0.04
     val period: Int = 0
     val _reach: Double = 4
     val drawing: Drawing = new Graphics.Drawing(Array(

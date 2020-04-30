@@ -8,8 +8,8 @@ import Graphics.{Circle, Drawing, DrawingElement}
 class SprayTower(square_ : Int2, size_info: SizeInfo) extends Tower(square_, size_info: SizeInfo)
 {
     protected val damage: Double = 0.5
-    protected val period: Int = 10
-    protected val _reach: Double = 2
+    protected val period: Int = 6
+    protected val _reach: Double = 2 //n'a aucune influence
     protected val bullet_speed = 0.07
     override val drawing: Drawing = new Drawing(Array(DrawingElement(filled_up = true, Color.green, Circle.unit),
         DrawingElement(filled_up = true, Color.yellow, Circle(Double2(0.25, 0), 0.25))))

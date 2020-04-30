@@ -5,7 +5,6 @@ import scala.io.{BufferedSource, Source}
 
 package object GameInstance
 {
-
     private val cyan_monster: Double2 => Monster = new CyanMonster(_)
     private val blue_monster: Double2 => Monster = new BlueMonster(_)
     private val shield_monster: Double2 => Monster = new ShieldMonster(_)
@@ -82,6 +81,68 @@ package object GameInstance
                         Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, blue_monster -> 2),
                         Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, cyan_monster -> 1)
                     ), Int2(4, 0))
+                )
+            )),
+            (_ => Level.from_list("Level 4", GameMap.from_file(Source.fromResource("map4")), 21, 12,
+                List(
+                    new Wave(List(
+                        Map(cyan_monster -> 1),
+                        Map(),
+                        Map(cyan_monster -> 2),
+                        Map(),
+                        Map(cyan_monster -> 3),
+                        Map(),
+                        Map(cyan_monster -> 4),
+                        Map(),
+                        Map(cyan_monster -> 7),
+                        Map(),
+                        Map(cyan_monster -> 9),
+                        Map(),
+                        Map(cyan_monster -> 12),
+                        Map(),
+                        Map(),
+                        Map(),
+                        Map(),
+                        Map(),
+                        Map(cyan_monster -> 10, little_monster -> 1),
+                        Map(),
+                        Map(),
+                        Map(),
+                        Map(),
+                        Map(cyan_monster -> 7, little_monster -> 2, blue_monster -> 3),
+                        Map(),
+                        Map(),
+                        Map(),
+                        Map(),
+                        Map(cyan_monster -> 7, little_monster -> 2, blue_monster -> 3),
+                        Map(),
+                        Map(),
+                        Map(),
+                        Map(),
+                        Map(shield_monster -> 2, little_monster -> 2)
+                    ), Int2(0, 6)),
+                    new Wave(List(
+                        Map(cyan_monster -> 3, healer_monster -> 1),
+                        Map(cyan_monster -> 8, blue_monster -> 2),
+                        Map(cyan_monster -> 3, healer_monster -> 1),
+                        Map(cyan_monster -> 2, blue_monster -> 2)
+                    ), Int2(0, 6)),
+                    new Wave(List(
+                        Map(little_monster -> 1, cyan_monster -> 3, blue_monster -> 2),
+                        Map(shield_monster -> 1, cyan_monster -> 4),
+                        Map(cyan_monster -> 2, shield_monster -> 1, blue_monster -> 1)
+                    ), Int2(0, 6)),
+                    new Wave(List(
+                        Map(little_monster -> 2, cyan_monster -> 10, blue_monster -> 1),
+                        Map(cyan_monster -> 1),
+                        Map(),
+                        Map(healer_monster -> 3, shield_monster -> 3, cyan_monster -> 3, blue_monster -> 1)
+                    ), Int2(0, 6)),
+                    new Wave(List(
+                        Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, cyan_monster -> 1),
+                        Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, blue_monster -> 2),
+                        Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, cyan_monster -> 1)
+                    ), Int2(0, 6))
                 )
             ))
         )

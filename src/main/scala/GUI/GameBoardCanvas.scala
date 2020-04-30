@@ -97,7 +97,7 @@ class GameBoardCanvas(val game_logic: GameLogic.GameLogic) extends JComponent
                                 tile_action_performed_signal.emit()
                             }
                         case TileConversion(player_side) =>
-                            if (game_logic.board.map.is_convertible(pos_square, player_side))
+                            if (game_logic.board.map.is_convertible(pos_square, player_side) && game_logic.board.tower_at_square(pos_square).isEmpty)
                             {
                                 game_logic.convert_tile(pos_square, cost, player_side)
                                 status = GameBoardCanvas.Idle()
