@@ -144,6 +144,7 @@ package object GameInstance
                         Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, cyan_monster -> 1)
                     ), Int2(0, 6))
                 )
-            ))
+            )),
+            (_ => new InfiniteLevel(GameMap.from_file(Source.fromResource("map1")), 15, 10))
         )
 }

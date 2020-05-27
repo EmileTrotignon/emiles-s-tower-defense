@@ -1,7 +1,6 @@
 package GameLogic
 
-import GUI.FTimer
-import GUI.FSignal
+import GUI.{FSignal, FTimer}
 import GameLogic.Towers.Tower
 
 class GameLogic(level: Level)
@@ -16,7 +15,7 @@ class GameLogic(level: Level)
 
     board.monster_in_base_signal.add_callback(player.monster_in_base)
     board.monster_died_signal.add_callback(player.killed_monster)
-    val tick_interval: Int = 1000 / 60
+    val tick_interval: Int = 1000 / 120
 
     val timer: GUI.FTimer = new FTimer(tick_interval, _ =>
     {
