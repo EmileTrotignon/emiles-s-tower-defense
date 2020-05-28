@@ -80,7 +80,12 @@ package object GameInstance
                         Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, cyan_monster -> 1),
                         Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, blue_monster -> 2),
                         Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 1, cyan_monster -> 1)
-                    ), Int2(4, 0))
+                    ), Int2(4, 0)),
+                    new Wave(List(
+                        (Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 2, healer_monster -> 1, cyan_monster -> 1), Int2(4, 0)),
+                        (Map(little_monster -> 1, shield_monster -> 2, protector_monster -> 1, healer_monster -> 1, blue_monster -> 2), Int2(0, 11)),
+                        (Map(little_monster -> 1, shield_monster -> 1, protector_monster -> 1, healer_monster -> 2, cyan_monster -> 1), Int2(0, 2))
+                    ))
                 )
             )),
             (_ => Level.from_list("Level 4", GameMap.from_file(Source.fromResource("map4")), 21, 12,
@@ -145,6 +150,9 @@ package object GameInstance
                     ), Int2(0, 6))
                 )
             )),
-            (_ => new InfiniteLevel(GameMap.from_file(Source.fromResource("map1")), 15, 10))
+            (_ => new InfiniteLevel("Infinite level 1", GameMap.from_file(Source.fromResource("map1")), 15, 10, Set[Int2](Int2(0, 4)))),
+            (_ => new InfiniteLevel("Infinite level 2", GameMap.from_file(Source.fromResource("map2")), 15, 10, Set[Int2](Int2(0, 9)))),
+            (_ => new InfiniteLevel("Infinite level 3", GameMap.from_file(Source.fromResource("map3")), 15, 10, Set[Int2](Int2(0, 2), Int2(0, 11), Int2(4, 0)))),
+            (_ => new InfiniteLevel("Infinite level 4", GameMap.from_file(Source.fromResource("map4")), 22, 10, Set[Int2](Int2(0, 6))))
         )
 }

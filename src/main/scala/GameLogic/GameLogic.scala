@@ -3,7 +3,7 @@ package GameLogic
 import GUI.{FSignal, FTimer}
 import GameLogic.Towers.Tower
 
-class GameLogic(level: Level)
+class GameLogic(val level: Level)
 {
     level.start
 
@@ -76,4 +76,6 @@ class GameLogic(level: Level)
         player.money -= cost
         board.map.set_tile(pos_square, if (player_side) TowerTile() else SpecialMonsterTile())
     }
+    
+    def abandon(): Unit = player.lives = 0
 }

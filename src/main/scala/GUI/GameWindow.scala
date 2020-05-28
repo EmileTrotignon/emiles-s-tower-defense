@@ -23,7 +23,8 @@ class GameWindow(val game_logic: GameLogic, val end_game: Unit => Unit) extends 
     content_pane.add(panel_player_actions, BorderLayout.PAGE_END)
     content_pane.add(panel_tile_actions, BorderLayout.EAST)
     this.setContentPane(content_pane)
-    game_logic.player.updated_signal.add_callback(panel_player_actions.player_info_panel.update_labels)
+    game_logic.level.updated_signal.add_callback(panel_player_actions.info_panel.update_level_labels)
+    game_logic.player.updated_signal.add_callback(panel_player_actions.info_panel.update_player_labels)
     game_logic.player.updated_signal.add_callback(panel_tile_actions.update_affordable_towers)
     game_logic.player.updated_signal.emit(game_logic.player)
     game_logic.player.you_lost_signal.add_callback(end_level("You lost"))
@@ -40,10 +41,10 @@ class GameWindow(val game_logic: GameLogic, val end_game: Unit => Unit) extends 
     
     def end_level(message: String)(u: Unit): Unit =
     {
+        game_logic.timer.stop()
         JOptionPane.showMessageDialog(this, message)
         this.setVisible(false)
         end_game()
-        game_logic.timer.stop()
         canvas.timer.stop()
         //System.exit(0)
     }

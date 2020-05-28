@@ -2,8 +2,12 @@ package GameLogic
 
 import GameLogic.Monsters.Monster
 
-class Wave(sw: List[Map[Double2 => Monster, Int]], val spawn_tile: Int2)
+class Wave(sub_waves: List[(Map[Double2 => Monster, Int], Int2)])
 {
+    def this(sw: List[Map[Double2 => Monster, Int]], spawn_tile: Int2) =
+    {
+        this(sw.map(a => (a, spawn_tile)))
+    }
 
     val time_between_subwaves = 200
 
@@ -11,9 +15,9 @@ class Wave(sw: List[Map[Double2 => Monster, Int]], val spawn_tile: Int2)
 
     var started = false
 
-    val subwaves: List[SubWave] = sw.map(a => new SubWave(a))
+    var next_subwaves: List[SubWave] = sub_waves.map(a => new SubWave(a))
 
-    var next_subwaves: List[SubWave] = List()
+    //var next_subwaves: List[SubWave] = List()
 
     def spawn_next_subwave(game_logic: GameLogic): Unit =
     {
@@ -21,15 +25,15 @@ class Wave(sw: List[Map[Double2 => Monster, Int]], val spawn_tile: Int2)
         {
             case subwave :: next =>
                 next_subwaves = next
-                subwave.spawn(game_logic, spawn_tile)
+                subwave.spawn(game_logic)
             case Nil => ()
         }
     }
 
     def start: Unit =
     {
-        next_subwaves = subwaves //cela sert si on joue plusieurs fois le meme niveau
-        ntick = 0 //cela sert si on joue plusieurs fois le meme niveau
+        //next_subwaves = subwaves //cela sert si on joue plusieurs fois le meme niveau
+        //ntick = 0 //cela sert si on joue plusieurs fois le meme niveau
         started = true
     }
 
@@ -57,4 +61,3 @@ class Wave(sw: List[Map[Double2 => Monster, Int]], val spawn_tile: Int2)
 
     }
 }
-

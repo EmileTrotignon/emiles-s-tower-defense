@@ -17,6 +17,8 @@ class PlayerLogic(private var _money: Double, private var _lives: Double)
 
     def lives: Double = _lives
 
+    val updated_signal = new FSignal[this.type]
+    
     def lives_=(new_lives: Double)
     {
         _lives = new_lives
@@ -24,8 +26,6 @@ class PlayerLogic(private var _money: Double, private var _lives: Double)
         if (lives <= 0)
             you_lost_signal.emit()
     }
-
-    val updated_signal = new FSignal[this.type]
 
     val you_lost_signal = new FSignal[Unit]
 

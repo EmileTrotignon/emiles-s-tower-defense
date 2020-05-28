@@ -1,5 +1,6 @@
 package GameLogic
 
+import GUI.FSignal
 import GameLogic.Monsters._
 
 import scala.collection.mutable
@@ -39,12 +40,24 @@ abstract class Level(val name: String, val map: GameMap, val starting_money: Dou
     def get_next_wave: Option[Wave]
 
     def is_finished: Boolean
+    
+    private var _wave_number: Int = 0
+    
+    def wave_number: Int = _wave_number
+    
+    val updated_signal = new FSignal[this.type]
+    
+    def wave_number_=(new_wave_number: Int)
+    {
+        _wave_number = new_wave_number
+        updated_signal.emit(this)
+    }
 }
 
 private case class MonsterDesc(constructor: Double2 => Monster, difficulty: Double, value: Double)
 
-class InfiniteLevel(override val map: GameMap, override val starting_money: Double, override val starting_lives: Double)
-  extends Level("Infinite level", map, starting_money, starting_lives)
+class InfiniteLevel(level_name: String, override val map: GameMap, override val starting_money: Double, override val starting_lives: Double, val spawn_tiles: Set[Int2])
+  extends Level(level_name, map, starting_money, starting_lives)
 {
 
     private val cyan_monster: Double2 => Monster = new CyanMonster(_)
@@ -92,7 +105,8 @@ class InfiniteLevel(override val map: GameMap, override val starting_money: Doub
             wave_return_on_investment += monster_desc.value
         }
         capital += wave_return_on_investment / 2
-        Some(new Wave(List(wave_map.toMap), Int2(0, 4)))
+        wave_number+=1
+        Some(new Wave(List(wave_map.toMap), RandomPick.randomPick(spawn_tiles)))
 
     }
 
@@ -122,6 +136,7 @@ object Level
             {
                 case wave :: next =>
                     next_waves = next
+                    wave_number += 1
                     Some(wave)
                 case Nil => None
             }
